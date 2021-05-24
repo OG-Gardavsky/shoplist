@@ -1,0 +1,23 @@
+body {
+    display: flex;
+    flex-direction: column;
+}
+
+header {
+    display: inherit;
+    flex-direction: row;
+    justify-content: space-between;
+}
+
+header span {
+    margin: auto 0;
+}
+
+
+.container  {
+    flex-grow: 1;
+}
+
+footer {
+    margin: auto 0 0 0;
+}
