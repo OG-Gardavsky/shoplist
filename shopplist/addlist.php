@@ -1,16 +1,7 @@
 <?php
-require 'inc/db.php';
 
-    if (!empty(@$_POST)) {
-    //    echo  'jmeno :'.@$_POST['name'].'<br />';
+    require 'inc/db.php';
 
-    //    $cislo = 1;
-    //    echo 'jmeno polozky:'.@$_POST[$cislo.'itemName'].'<br />';
-
-    //    echo 'pocet :'.@$_POST['cisloPOlozky'].'<br />';
-
-
-    }
 
 
     function displayRows($rowCount) {
@@ -18,6 +9,7 @@ require 'inc/db.php';
             echo '<div class="flexRow" >';
             $itemNum = $i + 1;
 
+            echo '<span style="margin: 33px 10px 0 0" "> <button type="button" class="btn btn-success">✓</button> </span> ';
             echo ' <div class="form-group">';
             echo '<label for="neco">'.$itemNum.'. item</label>';
             echo '<input type="text" name="'.$itemNum.'itemName" id="neco"  class="form-control" value="'
@@ -29,6 +21,7 @@ require 'inc/db.php';
             echo '<input type="number" name="'.$itemNum.'itemCount" id="name" class="form-control" value="'
                 .htmlspecialchars(@$_POST[$itemNum.'itemCount']).'"/>';
             echo '</div>';
+            echo '<span style="margin: 33px 0 0 10px" "> <button type="button" class="btn btn-danger">X</button> </span> ';
 
             echo '</div>';
         }
@@ -70,9 +63,10 @@ require 'inc/db.php';
 
         <?php
 
-            if (!isset( $_POST['numberOfRows'] )) {
+            if ( empty($_POST['numberOfRows']) ) {
                 $_POST['numberOfRows'] = 1;
             }
+
 
             if(isset($_POST['addRowBtn'])) {
                 $_POST['numberOfRows'] = $_POST['numberOfRows'] + 1;
@@ -80,18 +74,17 @@ require 'inc/db.php';
 
 
 
-            echo 'numberOfRows '.$_POST['numberOfRows'];
+
 
             displayRows(@$_POST['numberOfRows']);
-
-
 
 
         ?>
 
 
-        <form method="post">
-            <input type="submit" name="addRowBtn" value="Add row"/>
+        <form method="post" class="btn btn-secondary">
+            <input type="hidden" name="numberOfRows" value="<?php echo $_POST['numberOfRows']?>" />
+            <input type="submit" name="addRowBtn" value="Add item" />
         </form>
 
 
