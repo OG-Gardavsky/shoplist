@@ -1,17 +1,25 @@
 <?php
 require 'inc/db.php';
 
-if (!empty(@$_POST)) {
-//    echo  'jmeno :'.@$_POST['name'].'<br />';
-//    echo 'jmeno polozky:'.@$_POST['jmenoPolozky'].'<br />';
-//    echo 'pocet :'.@$_POST['cisloPOlozky'].'<br />';
+    if (!empty(@$_POST)) {
+    //    echo  'jmeno :'.@$_POST['name'].'<br />';
+
+    //    $cislo = 1;
+    //    echo 'jmeno polozky:'.@$_POST[$cislo.'itemName'].'<br />';
+
+    //    echo 'pocet :'.@$_POST['cisloPOlozky'].'<br />';
 
 
-}
+    }
 
 
-$pageTitle='Add new list';
-include 'inc/header.php';
+    function displayRows($rowCount) {
+
+    }
+
+
+    $pageTitle='Add new list';
+    include 'inc/header.php';
 
 ?>
 
@@ -44,24 +52,26 @@ include 'inc/header.php';
 
 
         <?php
-            $initialNum = 1;
+            $numberOfRows = 1;
 
             //udelat funkci ktera bude pri zvetseni cisla itereaci o i prekreslova celej seznam
 
-            for ($i = 0; $i<1; $i++) {
+
+
+            for ($i = 0; $i<$numberOfRows; $i++) {
                 echo '<div class="flexRow" >';
                 $itemNum = $i + 1;
 
                 echo ' <div class="form-group">';
                 echo '<label for="neco">'.$itemNum.'. item</label>';
-                echo '<input type="text" name="itemName" id="neco" required class="form-control" value="'
-                    .htmlspecialchars(@$_POST['itemName']).'"/>';
+                echo '<input type="text" name="'.$itemNum.'itemName" id="neco" required class="form-control" value="'
+                    .htmlspecialchars(@$_POST[$itemNum.'itemName']).'"/>';
                 echo '</div>';
 
                 echo '<div class="form-group">';
                 echo '<label for="name">count</label>';
-                echo '<input type="number" name="itemCount" id="name" required class="form-control" value="'
-                    .htmlspecialchars(@$_POST['itemCount']).'"/>';
+                echo '<input type="number" name="'.$itemNum.'itemCount" id="name" required class="form-control" value="'
+                    .htmlspecialchars(@$_POST[$itemNum.'itemCount']).'"/>';
                 echo '</div>';
 
                 echo '</div>';
