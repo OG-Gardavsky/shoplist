@@ -1,23 +1,20 @@
 <?php
 
-if (!empty($_POST)) {
-    $email = @$_POST['email'];
-    $password = @$_POST['password'];
-
-    echo $email;
-    echo $password;
-
-    $passwordHash = password_hash($password, PASSWORD_DEFAULT);
-
-    echo $passwordHash;
-
-    @$_POST['email'] = null;
-    @$_POST['password'] = null;
-
-//    header('Location: index.php');
+    if (!empty($_POST)) {
+        $email = @$_POST['email'];
+        $password = @$_POST['password'];
 
 
-}
+        $passwordHash = password_hash($password, PASSWORD_DEFAULT);
+
+
+        @$_POST['email'] = null;
+        @$_POST['password'] = null;
+
+    //    header('Location: index.php');
+
+
+    }
 
     $pageTitle='Log in';
     include 'inc/header.php';
@@ -26,9 +23,7 @@ if (!empty($_POST)) {
 <form method="post">
     <div class="form-group">
         <label for="email">E-mail:</label>
-        <input type="email" name="email" id="email" required class="form-control"
-            value="<?php echo htmlspecialchars(@$_POST['email'])?>
-        />
+        <input type="email" name="email" id="email" required class="form-control" />
 
     </div>
 

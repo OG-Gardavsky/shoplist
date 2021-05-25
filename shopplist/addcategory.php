@@ -11,13 +11,13 @@ include 'inc/header.php';
 
     <form method="post">
         <div class="form-group">
-            <label for="name">Name</label>
+            <label for="name">Name of category</label>
             <input type="text" name="name" id="name" required class="form-control" />
         </div>
 
 
-        <button type="submit" class="btn btn-primary">Add shopping list</button>
-        <a href="addlist.php" class="btn btn-light">cancel</a>
+        <button type="submit" class="btn btn-primary">Add category</button>
+        <a href="addlist.php" class="btn btn-light">back to shop list</a>
     </form>
 
 

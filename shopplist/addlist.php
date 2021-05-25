@@ -41,7 +41,6 @@
             />
         </div>
 
-
         <div class="flexRow">
 
             <div class="dropdown" >
@@ -60,9 +59,7 @@
 
         <hr />
 
-
         <?php
-
             if ( empty($_POST['numberOfRows']) ) {
                 $_POST['numberOfRows'] = 1;
             }
@@ -72,29 +69,22 @@
                 $_POST['numberOfRows'] = $_POST['numberOfRows'] + 1;
             }
 
-
-
-
-
             displayRows(@$_POST['numberOfRows']);
-
-
         ?>
 
 
-        <form method="post" class="btn btn-secondary">
-            <input type="hidden" name="numberOfRows" value="<?php echo $_POST['numberOfRows']?>" />
-            <input type="submit" name="addRowBtn" value="Add item" />
-        </form>
-
-
+        <input type="hidden" name="numberOfRows" value="<?php echo $_POST['numberOfRows']?>" />
+        <input type="submit" class="btn btn-secondary" name="addRowBtn" value="Add item" />
         <hr />
-
 
 
         <button type="submit" class="btn btn-primary">Add shopping list</button>
         <a href="index.php" class="btn btn-light">cancel</a>
     </form>
+
+
+
+
 
 
 <?php
