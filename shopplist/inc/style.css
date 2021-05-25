@@ -13,9 +13,9 @@ header span {
     margin: auto 0;
 }
 
-
-.container  {
-    flex-grow: 1;
+.flexRow {
+    display: flex;
+    flex-direction: row;
 }
 
 footer {
