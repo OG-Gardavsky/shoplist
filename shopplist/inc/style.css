@@ -18,6 +18,14 @@ header span {
     flex-direction: row;
 }
 
+.checkBtnPosition {
+    margin: 33px 10px 0 0
+}
+
+.delBtnPosition {
+    margin: 33px 0 0 10px
+}
+
 footer {
     margin: auto 0 0 0;
 }
