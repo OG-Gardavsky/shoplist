@@ -46,12 +46,14 @@ include 'inc/header.php';
         <?php
             $initialNum = 1;
 
+            //udelat funkci ktera bude pri zvetseni cisla itereaci o i prekreslova celej seznam
 
             for ($i = 0; $i<1; $i++) {
                 echo '<div class="flexRow" >';
+                $itemNum = $i + 1;
 
                 echo ' <div class="form-group">';
-                echo '<label for="neco">'.$i.'. item</label>';
+                echo '<label for="neco">'.$itemNum.'. item</label>';
                 echo '<input type="text" name="itemName" id="neco" required class="form-control" value="'
                     .htmlspecialchars(@$_POST['itemName']).'"/>';
                 echo '</div>';
