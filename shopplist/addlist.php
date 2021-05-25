@@ -20,13 +20,13 @@ require 'inc/db.php';
 
             echo ' <div class="form-group">';
             echo '<label for="neco">'.$itemNum.'. item</label>';
-            echo '<input type="text" name="'.$itemNum.'itemName" id="neco" required class="form-control" value="'
+            echo '<input type="text" name="'.$itemNum.'itemName" id="neco"  class="form-control" value="'
                 .htmlspecialchars(@$_POST[$itemNum.'itemName']).'"/>';
             echo '</div>';
 
             echo '<div class="form-group">';
             echo '<label for="name">count</label>';
-            echo '<input type="number" name="'.$itemNum.'itemCount" id="name" required class="form-control" value="'
+            echo '<input type="number" name="'.$itemNum.'itemCount" id="name" class="form-control" value="'
                 .htmlspecialchars(@$_POST[$itemNum.'itemCount']).'"/>';
             echo '</div>';
 
@@ -43,7 +43,7 @@ require 'inc/db.php';
     <form method="post">
         <div class="form-group">
             <label for="name">Name of list</label>
-            <input type="text" name="nameOfList" id="name" required class="form-control"
+            <input type="text" name="nameOfList" id="name" class="form-control"
                 value="<?php echo htmlspecialchars(@$_POST['nameOfList']) ?>"
             />
         </div>
@@ -70,37 +70,28 @@ require 'inc/db.php';
 
         <?php
 
-
-            if (empty(@$_POST['numberOfRows'])) {
-                @$_POST['numberOfRows'] = 1;
+            if (!isset( $_POST['numberOfRows'] )) {
+                $_POST['numberOfRows'] = 1;
             }
 
-            echo @$_POST['numberOfRows'];
+            if(isset($_POST['addRowBtn'])) {
+                $_POST['numberOfRows'] = $_POST['numberOfRows'] + 1;
+            }
+
+
+
+            echo 'numberOfRows '.$_POST['numberOfRows'];
 
             displayRows(@$_POST['numberOfRows']);
 
+
+
+
         ?>
 
-<!--        <button id="addRowBtn" class="btn btn-secondary" onclick=" --><?php // @$_POST['numberOfRows'] ++ ?><!-- ">add item</button>-->
-<!--        <button id="addRowBtn" class="btn btn-secondary" onclick=" --><?php // echo '<h1>blby toto</h1>' ?><!-- ">add item</button>-->
-
-
-        <?php
-
-        if(isset($_POST['button1'])) {
-            echo "This is Button1 that is selected";
-        }
-        if(isset($_POST['button2'])) {
-            echo "This is Button2 that is selected";
-        }
-        ?>
 
         <form method="post">
-            <input type="submit" name="button1"
-                   value="Button1"/>
-
-            <input type="submit" name="button2"
-                   value="Button2"/>
+            <input type="submit" name="addRowBtn" value="Add row"/>
         </form>
 
 
@@ -108,14 +99,10 @@ require 'inc/db.php';
 
 
 
-
         <button type="submit" class="btn btn-primary">Add shopping list</button>
         <a href="index.php" class="btn btn-light">cancel</a>
     </form>
 
-<!--<script>-->
-<!--    // document.querySelector('#addRowBtn').addEventListener('click', e => e.preventDefault());-->
-<!--</script>-->
 
 <?php
 include 'inc/footer.php';
