@@ -6,10 +6,14 @@
 
     function displayRows($rowCount) {
         for ($i = 0; $i<$rowCount; $i++) {
-            echo '<div class="flexRow" >';
+
             $itemNum = $i + 1;
 
+            echo '<div class="flexRow" >';
+
+
             echo '<span> <button type="button" class="btn btn-success checkBtnPosition">✓</button> </span> ';
+
             echo ' <div class="form-group">';
             echo '<label for="neco">'.$itemNum.'. item</label>';
             echo '<input type="text" name="'.$itemNum.'itemName" id="neco"  class="form-control" value="'
@@ -21,6 +25,7 @@
             echo '<input type="number" name="'.$itemNum.'itemCount" id="name" class="form-control" value="'
                 .htmlspecialchars(@$_POST[$itemNum.'itemCount']).'"/>';
             echo '</div>';
+
             echo '<span> <button type="button" class="btn btn-danger delBtnPosition">X</button> </span> ';
 
             echo '</div>';
