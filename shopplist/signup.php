@@ -6,13 +6,31 @@
 
     if (!empty(@$_POST)) {
 
+        // check if required values are filled in
         $requiredValues = ['email', 'password', 'passwordCheck'];
-
         foreach ($requiredValues as $value) {
             if (empty(@$_POST[$value])) {
                 $errors[$value] = 'Please fill '.$value;
             }
         }
+
+        if (empty($errors)) {
+            $email = @$_POST['email'];
+            $password = @$_POST['password'];
+            $passwordCheck = @$_POST['passwordCheck'];
+
+            if ($passwordCheck != $password) {
+                $errors['password'] = 'passwords have to match';
+                $errors['passwordCheck'] = 'passwords have to match';
+            }
+
+            if (empty($errors)) {
+                header('Location: index.php');
+            }
+
+        }
+
+
 
 
     }
