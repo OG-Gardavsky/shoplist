@@ -25,12 +25,11 @@
             }
 
             if (empty($errors)) {
+                $passwordHash = password_hash($password, PASSWORD_DEFAULT);
                 header('Location: index.php');
             }
 
         }
-
-
 
 
     }
@@ -48,9 +47,9 @@
             value=" <?php echo htmlspecialchars(@$_POST['email']) ?>"
         />
         <?php
-        if (!empty($errors['email'])){
-            echo '<div class="invalid-feedback">'.$errors['email'].'</div>';
-        }
+            if (!empty($errors['email'])){
+                echo '<div class="invalid-feedback">'.$errors['email'].'</div>';
+            }
         ?>
     </div>
 
@@ -68,9 +67,9 @@
         <label for="passwordCheck">Password:</label>
         <input type="password" name="passwordCheck" id="passwordCheck" required class="form-control <?php echo (!empty($errors['passwordCheck'])?'is-invalid':''); ?>" />
         <?php
-        if (!empty($errors['passwordCheck'])){
-            echo '<div class="invalid-feedback">'.$errors['passwordCheck'].'</div>';
-        }
+            if (!empty($errors['passwordCheck'])){
+                echo '<div class="invalid-feedback">'.$errors['passwordCheck'].'</div>';
+            }
         ?>
     </div>
 
