@@ -10,7 +10,7 @@
     include 'inc/header.php';
 
 
-    ?>
+?>
 
     <h1>
         your shopping lists

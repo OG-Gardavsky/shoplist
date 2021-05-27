@@ -1,6 +1,13 @@
 <?php
     session_start();
 
+    require 'inc/db.php';
+
+    //if session exists redirects to homepage
+    if(isset($_SESSION["user_id"])){
+        header('Location: index.php');
+    }
+
     $errors=[];
 
     if (!empty($_POST)) {
@@ -18,7 +25,30 @@
             $email = @$_POST['email'];
             $password = @$_POST['password'];
 
-            header('Location: index.php');
+            $existingUser = null;
+
+            try {
+                $stmt = $db->prepare("SELECT * FROM sl_users WHERE email = ? LIMIT 1");
+                $stmt->execute([$email]);
+                $existingUser=$stmt->fetch(PDO::FETCH_ASSOC);
+
+            } catch (Exception $exception) {
+                $errors['genericError'] = 'Unexpected application error';
+            }
+
+
+            if ($existingUser && password_verify($password, @$existingUser['password'])){
+                $_SESSION['user_id'] = $existingUser['id'];
+                header('Location: index.php');
+            }else{
+                $errors['genericErrors']="Invalid user or password!";
+            }
+
+            if (empty($errors)) {
+                header('Location: index.php');
+            }
+
+
         }
 
 

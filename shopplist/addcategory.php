@@ -1,10 +1,11 @@
 <?php
-require 'inc/db.php';
+    require 'inc/db.php';
+    require 'user_required.php';
 
 
 
-$pageTitle='Add new category';
-include 'inc/header.php';
+    $pageTitle='Add new category';
+    include 'inc/header.php';
 
 ?>
 

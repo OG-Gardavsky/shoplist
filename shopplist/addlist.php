@@ -1,6 +1,7 @@
 <?php
 
     require 'inc/db.php';
+    require 'user_required.php';
 
 
 
