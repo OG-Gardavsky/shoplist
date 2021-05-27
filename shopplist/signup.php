@@ -4,10 +4,15 @@
 
     $errors=[];
 
-    if (!empty($_POST)) {
+    if (!empty(@$_POST)) {
 
         $requiredValues = ['email', 'password', 'passwordCheck'];
 
+        foreach ($requiredValues as $value) {
+            if (empty(@$_POST[$value])) {
+                $errors[$value] = 'Please fill '.$value;
+            }
+        }
 
 
     }
