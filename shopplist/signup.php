@@ -24,26 +24,36 @@
                 $errors['passwordCheck'] = 'passwords have to match';
             }
 
+            //for safety reasons to DB not throw some exception to client
             try {
                 $isEmailTaken = $db->prepare("SELECT * FROM sl_users where email = ? LIMIT 1");
                 $isEmailTaken->execute([$email]);
-                if (intval($isEmailTaken->rowCount()) != 0){
-                    $errors['email'] = 'email is already taken';
-                }
+
             } catch (Exception $exception) {
-                $errors['genericError'] = 'unexpected application error';
+                $errors['genericError'] = 'Unexpected application error';
+            }
+
+            if (intval($isEmailTaken->rowCount()) != 0){
+                $errors['email'] = 'email is already taken';
             }
 
 
 
 
 
-
+            //when no error can happen iserting
             if (empty($errors)) {
                 $passwordHash = password_hash($password, PASSWORD_DEFAULT);
 
-                $insertUser = $db->prepare("INSERT INTO sl_users(email, password) VALUES (?, ?)");
-                $insertUser->execute([$email, $passwordHash]);
+                try {
+                    $insertUser = $db->prepare("INSERT INTO sl_users(email, password) VALUES (?, ?)");
+                    $insertUser->execute([$email, $passwordHash]);
+
+                } catch (Exception $exception) {
+                    $errors['genericError'] = 'Unexpected application error';
+                }
+
+
 
 //                header('Location: index.php');
                 echo 'hezky';
