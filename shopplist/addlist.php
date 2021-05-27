@@ -11,6 +11,11 @@
 
             echo '<div class="flexRow" >';
 
+//                echo '<input type="hidden" name="checked" value="false" />';
+//
+//                echo '<span> <button type="button" class="btn btn-success checkBtnPosition">';
+//                if ($_POST['checked'] == true ) { echo '✓'; }
+//                echo '</button> </span> ';
 
 
                 echo '<span> <button type="button" class="btn btn-success checkBtnPosition">✓</button> </span> ';

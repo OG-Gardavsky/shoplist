@@ -8,8 +8,6 @@
         $passwordHash = password_hash($password, PASSWORD_DEFAULT);
 
 
-        @$_POST['email'] = null;
-        @$_POST['password'] = null;
 
     //    header('Location: index.php');
 
@@ -23,7 +21,7 @@
 <form method="post">
     <div class="form-group">
         <label for="email">E-mail:</label>
-        <input type="email" name="email" id="email" required class="form-control" />
+        <input type="email" name="email" id="email" required class="form-control" value="<?php echo htmlspecialchars(@$_POST['email']); ?>" />
 
     </div>
 
