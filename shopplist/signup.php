@@ -24,19 +24,29 @@
                 $errors['passwordCheck'] = 'passwords have to match';
             }
 
-            $isEmailTaken = $db->prepare("SELECT * FROM sl_users where email = ? LIMIT 1");
-            $isEmailTaken->execute([$email]);
+            try {
+                $isEmailTaken = $db->prepare("SELECT * FROM sl_users where email = ? LIMIT 1");
+                $isEmailTaken->execute([$email]);
+                if (intval($isEmailTaken->rowCount()) != 0){
+                    $errors['email'] = 'email is already taken';
+                }
+            } catch (Exception $exception) {
+                $errors['genericError'] = 'unexpected application error';
+            }
 
-            echo $isEmailTaken;
+
+
 
 
 
             if (empty($errors)) {
+                $passwordHash = password_hash($password, PASSWORD_DEFAULT);
 
-//                $stmt = $db->prepare("INSERT INTO users(email, password) VALUES (?, ?)");
-//                $stmt->execute([$email, $passwordHash]);
-//                $passwordHash = password_hash($password, PASSWORD_DEFAULT);
-                header('Location: index.php');
+                $insertUser = $db->prepare("INSERT INTO sl_users(email, password) VALUES (?, ?)");
+                $insertUser->execute([$email, $passwordHash]);
+
+//                header('Location: index.php');
+                echo 'hezky';
             }
         }
     }
@@ -79,6 +89,9 @@
             }
         ?>
     </div>
+
+    <?php if (!empty($errors['genericError'])) { echo '<div class="alert alert-danger">'.$errors['genericError'].'</div>';  } ?>
+
 
     <button type="submit" class="btn btn-primary">Sig up</button>
     <a href="login.php" class="btn btn-light">Back to Log in</a>
