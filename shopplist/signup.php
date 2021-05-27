@@ -24,8 +24,18 @@
                 $errors['passwordCheck'] = 'passwords have to match';
             }
 
+            $isEmailTaken = $db->prepare("SELECT * FROM sl_users where email = ? LIMIT 1");
+            $isEmailTaken->execute([$email]);
+
+            echo $isEmailTaken;
+
+
+
             if (empty($errors)) {
-                $passwordHash = password_hash($password, PASSWORD_DEFAULT);
+
+//                $stmt = $db->prepare("INSERT INTO users(email, password) VALUES (?, ?)");
+//                $stmt->execute([$email, $passwordHash]);
+//                $passwordHash = password_hash($password, PASSWORD_DEFAULT);
                 header('Location: index.php');
             }
         }
