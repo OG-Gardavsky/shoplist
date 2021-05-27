@@ -1,11 +1,9 @@
 <?php
 
-    require 'inc/header.php';
+    session_start();  //spustíme práci se session
+    session_destroy();//zrušíme aktuální session
 
-    echo '<h2>you have been log out</h2>';
+    header('Location: login.php');//přesměrování na homepage
 
-    header('Location: login.php');
-
-    require 'inc/footer.php'
 
 ?>

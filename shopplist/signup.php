@@ -1,4 +1,5 @@
 <?php
+    session_start();
 
     require 'inc/db.php';
 
@@ -38,10 +39,7 @@
             }
 
 
-
-
-
-            //when no error can happen iserting
+            //when no error can happen inserting
             if (empty($errors)) {
                 $passwordHash = password_hash($password, PASSWORD_DEFAULT);
 
@@ -49,14 +47,17 @@
                     $insertUser = $db->prepare("INSERT INTO sl_users(email, password) VALUES (?, ?)");
                     $insertUser->execute([$email, $passwordHash]);
 
+
+                    $createduser = $db->prepare("SELECT id FROM sl_users WHERE email = ? LIMIT 1");
+                    $createduser->execute([$email]);
+
+                    $_SESSION['user_id'] = (int)$createduser->fetchColumn();
+
+                    header('Location: index.php');
+
                 } catch (Exception $exception) {
                     $errors['genericError'] = 'Unexpected application error';
                 }
-
-
-
-//                header('Location: index.php');
-                echo 'hezky';
             }
         }
     }
