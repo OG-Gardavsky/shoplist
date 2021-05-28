@@ -81,8 +81,7 @@
                         foreach ($categoryList as $category){
 
                             echo '<option value="'.$category['id'].'"'
-                                .($category['id']==$shoplistCategory?'selected="selected"':'')
-                                .'">'
+                                .($category['id']==$shoplistCategory?'selected="selected"':'').'>'
                                 .htmlspecialchars($category['name'])
                                 .'</option>';
                         }
