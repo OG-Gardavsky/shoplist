@@ -41,7 +41,7 @@
                 $_SESSION['user_id'] = $existingUser['id'];
                 header('Location: index.php');
             }else{
-                $errors['genericErrors']="Invalid user or password!";
+                $errors['genericError']="Invalid user or password!";
             }
 
             if (empty($errors)) {
@@ -81,7 +81,7 @@
         ?>
     </div>
 
-    <?php if (!empty($errors)) { echo '<div class="alert alert-danger"> Unable to login. </div>';  } ?>
+    <?php if (!empty($errors['genericError'])) { echo '<div class="alert alert-danger">'.$errors['genericError'].'</div>';  } ?>
 
     <button type="submit" class="btn btn-primary">Log in</button>
     <a href="signup.php" class="btn btn-light">Sign up</a>

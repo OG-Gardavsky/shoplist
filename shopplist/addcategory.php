@@ -2,12 +2,29 @@
     require 'inc/db.php';
     require 'user_required.php';
 
+    $userId = $_SESSION["user_id"];
+
+    $stmt = $db->prepare("SELECT * FROM sl_categories WHERE user_id = ? LIMIT 1");
+    $stmt->execute([$userId]);
+    $existingCategories=$stmt->fetchAll(PDO::FETCH_ASSOC);
+
+
+
 
 
     $pageTitle='Add new category';
     include 'inc/header.php';
 
 ?>
+
+    <?php
+        echo 'user id: '.$userId.'<br/>';
+
+        foreach ($existingCategories as $category) {
+            echo $category['id'];
+        }
+
+    ?>
 
 
     <form method="post">
