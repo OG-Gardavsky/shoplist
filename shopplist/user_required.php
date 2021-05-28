@@ -7,7 +7,7 @@
 		die();
 	}
 
-	$stmt = $db->prepare("SELECT * FROM users WHERE id = ? LIMIT 1");
+	$stmt = $db->prepare("SELECT * FROM sl_users WHERE id = ? LIMIT 1");
 	$stmt->execute(array($_SESSION["user_id"]));
 
 	$currentUser = $stmt->fetch(PDO::FETCH_ASSOC);
