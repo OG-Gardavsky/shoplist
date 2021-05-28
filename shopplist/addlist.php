@@ -3,9 +3,18 @@
     require 'inc/db.php';
     require 'user_required.php';
 
-    $categoryListQuery = $db->prepare("SELECT name FROM sl_categories WHERE name = ? AND user_id = ?  LIMIT 1");
-    $categoryListQuery->execute([$categoryName, $currentUserId]);
-    $createdCategoryName = $categoryListQuery->fetch(PDO::FETCH_ASSOC);
+    $errors=[];
+
+    $categoryListQuery = $db->prepare("SELECT * FROM sl_categories WHERE user_id = ?");
+    try {
+        $categoryListQuery->execute([$currentUserId]);
+        $categoryList = $categoryListQuery->fetchAll(PDO::FETCH_ASSOC);
+
+    } catch (Exception $exception) {
+        $errors['genericError'] = 'Unexpected application error';
+    }
+
+
 
 
 
@@ -97,6 +106,13 @@
         <button type="submit" class="btn btn-primary">Add shopping list</button>
         <a href="index.php" class="btn btn-light">cancel</a>
     </form>
+
+<?php
+
+    foreach ($categoryList as $category) {
+        echo $category['name'].'<br />';
+    }
+?>
 
 
 
