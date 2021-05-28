@@ -11,6 +11,7 @@
 	$stmt->execute(array($_SESSION["user_id"]));
 
 	$currentUser = $stmt->fetch(PDO::FETCH_ASSOC);
+$currentUserId = $_SESSION["user_id"];
 
     if (!$currentUser){
         session_destroy();

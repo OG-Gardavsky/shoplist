@@ -3,6 +3,10 @@
     require 'inc/db.php';
     require 'user_required.php';
 
+    $categoryListQuery = $db->prepare("SELECT name FROM sl_categories WHERE name = ? AND user_id = ?  LIMIT 1");
+    $categoryListQuery->execute([$categoryName, $currentUserId]);
+    $createdCategoryName = $categoryListQuery->fetch(PDO::FETCH_ASSOC);
+
 
 
     function displayRows($rowCount) {

@@ -2,7 +2,7 @@
     require 'inc/db.php';
     require 'user_required.php';
 
-    $userId = $_SESSION["user_id"];
+
     $errors=[];
     $infoMessage = '';
 
@@ -13,7 +13,7 @@
 
         $duplicityCheck = $db->prepare("SELECT * FROM sl_categories WHERE user_id = ? AND name = ?");
         try {
-            $duplicityCheck->execute([$userId, $categoryName]);
+            $duplicityCheck->execute([$currentUserId, $categoryName]);
             if ($duplicityCheck->rowCount() != 0) {
                 $errors['name'] = 'Category with this name already exists';
             }
@@ -25,10 +25,10 @@
 
             try {
                 $insertCategory = $db->prepare("INSERT INTO sl_categories(user_id, name) VALUES (?, ?)");
-                $insertCategory->execute([$userId, $categoryName]);
+                $insertCategory->execute([$currentUserId, $categoryName]);
 
                 $createdCategoryQuery = $db->prepare("SELECT name FROM sl_categories WHERE name = ? AND user_id = ?  LIMIT 1");
-                $createdCategoryQuery->execute([$categoryName, $userId]);
+                $createdCategoryQuery->execute([$categoryName, $currentUserId]);
                 $createdCategoryName = $createdCategoryQuery->fetch(PDO::FETCH_ASSOC);
 
                 $infoMessage = 'Category: '.strval($createdCategoryName['name']).' was successfully created.';
