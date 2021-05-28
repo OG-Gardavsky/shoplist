@@ -70,29 +70,28 @@
             />
         </div>
 
-        <div class="flexRow">
 
-            <div class="form-group">
-                <label for="categoryId">Kategorie:</label>
-                <select name="categoryId" required class="form-control <?php echo (!empty($errors['category'])?'is-invalid':''); ?>">
-                    <option value="">--choose category--</option>
-                    <?php
-                        if (!empty($categoryList)){
-                            foreach ($categoryList as $category){
 
-                                echo '<option value="'.$category['id'].'"'
-                                    .($category['id']==$shoplistCategory?'selected="selected"':'')
-                                    .'">'
-                                    .htmlspecialchars($category['name'])
-                                    .'</option>';
-                            }
+        <div class="form-group">
+            <label for="categoryId">Kategorie:</label>
+            <select name="categoryId" required class="form-control <?php echo (!empty($errors['category'])?'is-invalid':''); ?>">
+                <option value="">--choose category--</option>
+                <?php
+                    if (!empty($categoryList)){
+                        foreach ($categoryList as $category){
+
+                            echo '<option value="'.$category['id'].'"'
+                                .($category['id']==$shoplistCategory?'selected="selected"':'')
+                                .'">'
+                                .htmlspecialchars($category['name'])
+                                .'</option>';
                         }
-                    ?>
-                </select>
-            </div>
-
-            <span> <a href="addcategory.php" class="btn btn-light">add new Category</a> </span>
+                    }
+                ?>
+            </select>
         </div>
+
+        <span> <a href="addcategory.php" class="btn btn-light">add new Category</a> </span>
 
         <hr />
 
@@ -119,14 +118,6 @@
         <a href="index.php" class="btn btn-light">cancel</a>
     </form>
 
-<?php
-
-    echo @$_POST['categoryId'];
-//
-//    foreach ($categoryList as $category) {
-//        echo $category['name'].'<br />';
-//    }
-//?>
 
 
 
