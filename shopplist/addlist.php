@@ -3,6 +3,10 @@
     require 'inc/db.php';
     require 'user_required.php';
 
+
+    $shoplistCategory=(!empty($_REQUEST['categoryId'])?intval($_REQUEST['categoryId']):'');
+
+
     $errors=[];
 
     $categoryListQuery = $db->prepare("SELECT * FROM sl_categories WHERE user_id = ?");
@@ -68,27 +72,35 @@
 
         <div class="flexRow">
 
-            <div class="dropdown" >
-                <button type="button" class="btn dropdown-toggle" data-toggle="dropdown">
-                    Category of shoplist
-                </button>
-                <div class="dropdown-menu">
-                    <a class="dropdown-item" href="#">Link 1</a>
-                    <a class="dropdown-item" href="#">Link 2</a>
-                    <a class="dropdown-item" href="#">Link 3</a>
-                </div>
+            <div class="form-group">
+                <label for="categoryId">Kategorie:</label>
+                <select name="categoryId" required class="form-control <?php echo (!empty($errors['category'])?'is-invalid':''); ?>">
+                    <option value="">--choose category--</option>
+                    <?php
+                        if (!empty($categoryList)){
+                            foreach ($categoryList as $category){
+
+                                echo '<option value="'.$category['id'].'"'
+                                    .($category['id']==$shoplistCategory?'selected="selected"':'')
+                                    .'">'
+                                    .htmlspecialchars($category['name'])
+                                    .'</option>';
+                            }
+                        }
+                    ?>
+                </select>
             </div>
 
-            <a href="addcategory.php" class="btn btn-light">add new Category</a>
+            <span> <a href="addcategory.php" class="btn btn-light">add new Category</a> </span>
         </div>
 
         <hr />
 
         <?php
+            //logic for displaying
             if ( empty($_POST['numberOfRows']) ) {
                 $_POST['numberOfRows'] = 1;
             }
-
 
             if(isset($_POST['addRowBtn'])) {
                 $_POST['numberOfRows'] = $_POST['numberOfRows'] + 1;
@@ -109,10 +121,12 @@
 
 <?php
 
-    foreach ($categoryList as $category) {
-        echo $category['name'].'<br />';
-    }
-?>
+    echo @$_POST['categoryId'];
+//
+//    foreach ($categoryList as $category) {
+//        echo $category['name'].'<br />';
+//    }
+//?>
 
 
 
