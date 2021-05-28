@@ -9,6 +9,10 @@ header {
     justify-content: space-between;
 }
 
+header a:hover {
+    text-decoration: none;
+}
+
 header span {
     margin: auto 0;
 }

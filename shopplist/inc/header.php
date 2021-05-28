@@ -14,7 +14,9 @@
     </head>
     <body>
         <header class="container bg-dark">
-            <h1 class="text-white py-4 px-2">Shop list</h1>
+            <a href="index.php">
+                <h1 class="text-white py-4 px-2">Shop list</h1>
+            </a>
             <span> <a href="logout.php" class="btn btn-light">Log out</a> </span>
         </header>
         <main class="container pt-2">
