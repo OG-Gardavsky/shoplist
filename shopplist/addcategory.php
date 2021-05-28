@@ -3,10 +3,29 @@
     require 'user_required.php';
 
     $userId = $_SESSION["user_id"];
+    $errors=[];
 
-    $stmt = $db->prepare("SELECT * FROM sl_categories WHERE user_id = ? LIMIT 1");
-    $stmt->execute([$userId]);
-    $existingCategories=$stmt->fetchAll(PDO::FETCH_ASSOC);
+    if (!empty(@$_POST['name'])) {
+
+        $categoryName =  htmlspecialchars(trim(@$_POST['name']) );
+
+
+        $duplicityCheck = $db->prepare("SELECT * FROM sl_categories WHERE user_id = ? AND name = ?");
+        try {
+            $duplicityCheck->execute([$userId, $categoryName]);
+            if ($duplicityCheck->rowCount() != 0) {
+                $errors['name'] = 'Category with this name already exists';
+            }
+        } catch (Exception $exception) {
+            $errors['genericError'] = 'Unexpected application error';
+        }
+
+
+
+
+    }
+
+
 
 
 
@@ -17,21 +36,29 @@
 
 ?>
 
-    <?php
-        echo 'user id: '.$userId.'<br/>';
-
-        foreach ($existingCategories as $category) {
-            echo $category['id'];
-        }
-
-    ?>
+<!--    --><?php
+//        echo 'user id: '.$userId.'<br/>';
+//
+//        foreach ($existingCategories as $category) {
+//            echo $category['id'];
+//        }
+//
+//    ?>
 
 
     <form method="post">
         <div class="form-group">
             <label for="name">Name of category</label>
-            <input type="text" name="name" id="name" required class="form-control" />
+            <input type="text" name="name" id="name" required class="form-control <?php echo (!empty($errors['name'])?'is-invalid':''); ?>"
+                   value="<?php echo htmlspecialchars( trim(@$_POST['name']) ); ?>" />
+            <?php
+                if (!empty($errors['name'])){
+                    echo '<div class="invalid-feedback">'.$errors['name'].'</div>';
+                }
+            ?>
         </div>
+
+        <?php if (!empty($errors['genericError'])) { echo '<div class="alert alert-danger">'.$errors['genericError'].'</div>';  } ?>
 
 
         <button type="submit" class="btn btn-primary">Add category</button>
