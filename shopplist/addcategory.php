@@ -7,7 +7,7 @@
 
     if (!empty(@$_POST['name'])) {
 
-        $categoryName =  htmlspecialchars(trim(@$_POST['name']) );
+        $categoryName =  trim(@$_POST['name']);
 
 
         $duplicityCheck = $db->prepare("SELECT * FROM sl_categories WHERE user_id = ? AND name = ?");
@@ -18,6 +18,28 @@
             }
         } catch (Exception $exception) {
             $errors['genericError'] = 'Unexpected application error';
+        }
+
+        if (empty($errors)) {
+
+            try {
+                $insertCategory = $db->prepare("INSERT INTO sl_categories(user_id, name) VALUES (?, ?)");
+                $insertCategory->execute([$userId, $categoryName]);
+
+                $createdCategoryQuery = $db->prepare("SELECT name FROM sl_categories WHERE name = ? AND user_id = ?  LIMIT 1");
+                $createdCategoryQuery->execute([$categoryName, $userId]);
+
+                $createdCategoryName = $createdCategoryQuery->fetch(PDO::FETCH_ASSOC);
+
+//                echo strval($createdCategoryName['name']);
+
+            } catch (Exception $exception) {
+                $errors['genericError'] = 'Unexpected application error';
+            }
+
+
+
+
         }
 
 
