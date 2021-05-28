@@ -4,6 +4,7 @@
 
     $userId = $_SESSION["user_id"];
     $errors=[];
+    $infoMessage = '';
 
     if (!empty(@$_POST['name'])) {
 
@@ -28,16 +29,15 @@
 
                 $createdCategoryQuery = $db->prepare("SELECT name FROM sl_categories WHERE name = ? AND user_id = ?  LIMIT 1");
                 $createdCategoryQuery->execute([$categoryName, $userId]);
-
                 $createdCategoryName = $createdCategoryQuery->fetch(PDO::FETCH_ASSOC);
 
-//                echo strval($createdCategoryName['name']);
+                $infoMessage = 'Category: '.strval($createdCategoryName['name']).' was successfully created.';
+                unset($_POST['name']);
+
 
             } catch (Exception $exception) {
                 $errors['genericError'] = 'Unexpected application error';
             }
-
-
 
 
         }
@@ -80,7 +80,11 @@
             ?>
         </div>
 
-        <?php if (!empty($errors['genericError'])) { echo '<div class="alert alert-danger">'.$errors['genericError'].'</div>';  } ?>
+        <?php
+            if (!empty($errors['genericError'])) { echo '<div class="alert alert-danger">'.$errors['genericError'].'</div>';  }
+
+            if ($infoMessage != '') { echo '<div class="alert alert-info">'.$infoMessage.'</div>';  }
+        ?>
 
 
         <button type="submit" class="btn btn-primary">Add category</button>
