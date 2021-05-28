@@ -17,7 +17,15 @@
             <a href="index.php">
                 <h1 class="text-white py-4 px-2">Shop list</h1>
             </a>
-            <span> <a href="logout.php" class="btn btn-light">Log out</a> </span>
+            <?php
+                $current_file_name = basename($_SERVER['PHP_SELF']);
+
+                if ($current_file_name != "login.php" && $current_file_name != "signup.php") {
+
+                    echo '<span> <a href="logout.php" class="btn btn-light">Log out</a> </span>';
+                }
+
+            ?>
         </header>
         <main class="container pt-2">
         <h2><?php echo (!empty($pageTitle) ? $pageTitle : '')?></h2>
