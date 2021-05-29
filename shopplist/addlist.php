@@ -4,10 +4,24 @@
     require 'user_required.php';
 
 
+    $errors=[];
     $selectedCategory=(!empty($_POST['categoryId'])?intval($_POST['categoryId']):'');
 
 
-    $errors=[];
+    if(isset($_POST['saveShopListBtn'])) {
+        echo isset($_POST['categoryId']).'<br/>';
+        echo $_POST['categoryId'];
+
+        if ($_POST['nameOfList'] == '' || $_POST['nameOfList'] == null ) {
+            $errors['nameOfList'] = 'name cannot be blank';
+        }
+
+        if ($_POST['categoryId'] == '' || $_POST['categoryId'] == null ) {
+            $errors['categoryId'] = 'category cannot be blank';
+        }
+
+    }
+
 
     $categoryListQuery = $db->prepare("SELECT * FROM sl_categories WHERE user_id = ?");
     try {
@@ -65,16 +79,24 @@
     <form method="post">
         <div class="form-group">
             <label for="name">Name of list</label>
-            <input type="text" name="nameOfList" id="name" class="form-control"
+            <input type="text" name="nameOfList" id="name" class="form-control <?php echo (!empty($errors['nameOfList'])?'is-invalid':''); ?>"
+
                 value="<?php echo htmlspecialchars(@$_POST['nameOfList']) ?>"
             />
+            <?php
+                if (!empty($errors['nameOfList'])){
+                    echo '<div class="invalid-feedback">'.$errors['nameOfList'].'</div>';
+                }
+            ?>
         </div>
 
 
 
         <div class="form-group">
             <label for="categoryId">Category:</label>
-            <select name="categoryId" required class="form-control <?php echo (!empty($errors['category'])?'is-invalid':''); ?>">
+            <select name="categoryId"
+
+                    class="form-control <?php echo (!empty($errors['categoryId'])?'is-invalid':''); ?>">
                 <option value="">--choose category--</option>
                 <?php
                     if (!empty($categoryList)){
@@ -88,6 +110,11 @@
                     }
                 ?>
             </select>
+            <?php
+                if (!empty($errors['categoryId'])){
+                    echo '<div class="invalid-feedback">'.$errors['categoryId'].'</div>';
+                }
+            ?>
         </div>
 
         <span> <a href="addcategory.php" class="btn btn-light">add new Category</a> </span>
@@ -113,7 +140,7 @@
         <hr />
 
 
-        <button type="submit" class="btn btn-primary">Add shopping list</button>
+        <input type="submit" class="btn btn-primary" name="saveShopListBtn" value="Save shopping list" />
         <a href="index.php" class="btn btn-light">Back</a>
     </form>
 
