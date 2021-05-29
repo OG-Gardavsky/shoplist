@@ -1,3 +1,10 @@
+/*.bg-primary {*/
+/*    background-color: #50C878;*/
+/*    color: #50C878;*/
+/*}*/
+
+
+
 body {
     display: flex;
     flex-direction: column;
@@ -7,6 +14,7 @@ header {
     display: inherit;
     flex-direction: row;
     justify-content: space-between;
+    /*background-color: #80e2a2;*/
 }
 
 header a:hover {
@@ -16,6 +24,11 @@ header a:hover {
 header span {
     margin: auto 0;
 }
+
+footer {
+    margin: auto 0 0 0;
+}
+
 
 .flexRow {
     display: flex;
@@ -30,6 +43,13 @@ header span {
     margin: 33px 0 0 10px
 }
 
-footer {
-    margin: auto 0 0 0;
+
+
+
+.card {
+    margin-top: 5px;
+}
+
+.cardContent {
+    justify-content: space-between;
 }
