@@ -23,9 +23,20 @@
             }
 
         } catch (Exception $exception) {
-            echo $exception;
             $errors['genericError'] = 'Unexpected application error';
         }
+
+        //in case of submitting delete
+        if(isset($_POST['delListBtn'])) {
+            $shopListToDeleteQuery = $db->prepare("DELETE FROM sl_shop_lists WHERE id = ? AND user_id = ? LIMIT 1");
+            try {
+                $shopListToDeleteQuery->execute([$shopListId, $currentUserId]);
+            } catch (Exception $exception) {
+                $errors['genericError'] = 'Unexpected application error';
+            }
+            header('location: index.php');
+        }
+
 
         if (isset($shopListToDelete)) {
             echo '<div class="alert alert-info">Are you sure you want to delete:"'.
@@ -47,8 +58,11 @@
 
 
 ?>
+    <form method="post">
+        <input type="submit" class="btn btn-danger" name="delListBtn" value="Delete item" />
+        <a href="index.php" class="btn btn-light">cancel</a>
+    </form>
 
-    <input type="submit" class="btn btn-secondary" name="addRowBtn" value="Add item" />
 
 
 
