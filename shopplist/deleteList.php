@@ -35,15 +35,12 @@
             .'" shopping list(including all items)</div>';
     }
 
-
+    if (!empty($errors['genericError'])) {
+        echo '<div class="alert alert-danger">' . $errors['genericError'] . '</div>';
+    }
 
 ?>
 
-<!--    <div class="alert alert-info">-->
-<!--        Are you sure you want to delete: "--><?php //if (isset($shopListToDelete)) { $shopListToDelete['name']; }?><!--" shopping list(including all items)?-->
-<!--    </div>-->
-
-<?php if (!empty($errors['genericError'])) { echo '<div class="alert alert-danger">'.$errors['genericError'].'</div>';  } ?>
 
 
 
