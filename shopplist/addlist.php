@@ -9,8 +9,8 @@
 
 
     if(isset($_POST['saveShopListBtn'])) {
-        echo isset($_POST['categoryId']).'<br/>';
-        echo $_POST['categoryId'];
+//        echo isset($_POST['categoryId']).'<br/>';
+//        echo $_POST['categoryId'];
 
         if ($_POST['nameOfList'] == '' || $_POST['nameOfList'] == null ) {
             $errors['nameOfList'] = 'name cannot be blank';
@@ -19,6 +19,24 @@
         if ($_POST['categoryId'] == '' || $_POST['categoryId'] == null ) {
             $errors['categoryId'] = 'category cannot be blank';
         }
+
+        if (empty($errors)) {
+            $nameOfList = $_POST['nameOfList'];
+            $categoryId = $_POST['categoryId'];
+
+            $saveQuery=$db->prepare('INSERT INTO sl_shop_lists (user_id, category_id, name) VALUES (:user, :categoryId, :name);');
+            try {
+                $saveQuery->execute([
+                    ':user'=> $currentUserId,
+                    ':categoryId'=> $categoryId,
+                    ':name'=>$nameOfList
+                ]);
+
+            } catch (Exception $exception) {
+                $errors['genericError'] = 'Error during saving of shop list';
+            }
+        }
+
 
     }
 
@@ -138,6 +156,8 @@
         <input type="hidden" name="numberOfRows" value="<?php echo $_POST['numberOfRows']?>" />
         <input type="submit" class="btn btn-secondary" name="addRowBtn" value="Add item" />
         <hr />
+
+        <?php if (!empty($errors['genericError'])) { echo '<div class="alert alert-danger">'.$errors['genericError'].'</div>';  } ?>
 
 
         <input type="submit" class="btn btn-primary" name="saveShopListBtn" value="Save shopping list" />
