@@ -5,7 +5,7 @@
 
 
 
-    $shopListsQuery = $db->prepare("SELECT sl_shop_lists.id, sl_shop_lists.name AS 'listName', sl_shop_lists.finished, sl_shop_lists.user_id, sl_categories.name AS 'categoryName' FROM sl_shop_lists JOIN sl_categories ON sl_shop_lists.category_id=sl_categories.id WHERE sl_shop_lists.user_id = ?");
+    $shopListsQuery = $db->prepare("SELECT sl_shop_lists.id AS shopListId, sl_shop_lists.name AS 'listName', sl_shop_lists.finished, sl_categories.name AS 'categoryName' FROM sl_shop_lists JOIN sl_categories ON sl_shop_lists.category_id=sl_categories.id WHERE sl_shop_lists.user_id = ?");
     try {
         $shopListsQuery->execute([$currentUserId]);
         $shopLists = $shopListsQuery->fetchAll(PDO::FETCH_ASSOC);
@@ -33,8 +33,9 @@
                         <span>'.htmlspecialchars($shopList['listName']).'</span>
                     </div>
                     <div>
-                        <a href="#" class="btn btn-secondary">edit</a>
-                        <a type="button" class="btn btn-success">✓</a>
+                        <a href="deleteList.php?shopListId='.$shopList['shopListId'].'" type="button" class="btn btn-danger">X</a>
+                        <a href="#" type="button" class="btn btn-secondary">edit</a>
+                        <a href="#" type="button" class="btn btn-success">✓</a>
                     </div>
                 </div>
             </div>';
