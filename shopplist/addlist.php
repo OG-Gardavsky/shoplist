@@ -4,7 +4,7 @@
     require 'user_required.php';
 
 
-    $shoplistCategory=(!empty($_REQUEST['categoryId'])?intval($_REQUEST['categoryId']):'');
+    $selectedCategory=(!empty($_POST['categoryId'])?intval($_POST['categoryId']):'');
 
 
     $errors=[];
@@ -73,7 +73,7 @@
 
 
         <div class="form-group">
-            <label for="categoryId">Kategorie:</label>
+            <label for="categoryId">Category:</label>
             <select name="categoryId" required class="form-control <?php echo (!empty($errors['category'])?'is-invalid':''); ?>">
                 <option value="">--choose category--</option>
                 <?php
@@ -81,7 +81,7 @@
                         foreach ($categoryList as $category){
 
                             echo '<option value="'.$category['id'].'"'
-                                .($category['id']==$shoplistCategory?'selected="selected"':'').'>'
+                                .($category['id']==$selectedCategory?'selected="selected"':'').'>'
                                 .htmlspecialchars($category['name'])
                                 .'</option>';
                         }
@@ -114,7 +114,7 @@
 
 
         <button type="submit" class="btn btn-primary">Add shopping list</button>
-        <a href="index.php" class="btn btn-light">cancel</a>
+        <a href="index.php" class="btn btn-light">Back</a>
     </form>
 
 

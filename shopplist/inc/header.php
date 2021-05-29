@@ -29,3 +29,4 @@
         </header>
         <main class="container pt-2">
         <h2><?php echo (!empty($pageTitle) ? $pageTitle : '')?></h2>
+        <hr />
