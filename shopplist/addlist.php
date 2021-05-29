@@ -9,8 +9,6 @@
 
 
     if(isset($_POST['saveShopListBtn'])) {
-//        echo isset($_POST['categoryId']).'<br/>';
-//        echo $_POST['categoryId'];
 
         if ($_POST['nameOfList'] == '' || $_POST['nameOfList'] == null ) {
             $errors['nameOfList'] = 'name cannot be blank';
@@ -21,7 +19,7 @@
         }
 
         if (empty($errors)) {
-            $nameOfList = $_POST['nameOfList'];
+            $nameOfList = trim($_POST['nameOfList']);
             $categoryId = $_POST['categoryId'];
 
             $saveQuery=$db->prepare('INSERT INTO sl_shop_lists (user_id, category_id, name) VALUES (:user, :categoryId, :name);');
@@ -93,7 +91,7 @@
     include 'inc/header.php';
 
 ?>
-
+<!-- List name -->
     <form method="post">
         <div class="form-group">
             <label for="name">Name of list</label>
@@ -109,7 +107,7 @@
         </div>
 
 
-
+<!-- category selection -->
         <div class="form-group">
             <label for="categoryId">Category:</label>
             <select name="categoryId"
@@ -136,9 +134,10 @@
         </div>
 
         <span> <a href="addcategory.php" class="btn btn-light">add new Category</a> </span>
-
         <hr />
 
+
+<!--displaying items -->
         <?php
             //logic for displaying
             if ( empty($_POST['numberOfRows']) ) {
@@ -152,7 +151,7 @@
             displayRows(@$_POST['numberOfRows']);
         ?>
 
-
+<!-- submit buttons-->
         <input type="hidden" name="numberOfRows" value="<?php echo $_POST['numberOfRows']?>" />
         <input type="submit" class="btn btn-secondary" name="addRowBtn" value="Add item" />
         <hr />
@@ -163,11 +162,6 @@
         <input type="submit" class="btn btn-primary" name="saveShopListBtn" value="Save shopping list" />
         <a href="index.php" class="btn btn-light">Back</a>
     </form>
-
-
-
-
-
 
 
 <?php
