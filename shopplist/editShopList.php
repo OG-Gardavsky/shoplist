@@ -89,9 +89,6 @@
             $errors['genericError'] = 'Unexpected application error';
         }
 
-
-
-
     }
 
 
@@ -148,7 +145,7 @@
         <div class="form-group">
             <label for="name">Name of list</label>
             <input type="text" name="nameOfList" id="name" class="form-control <?php echo (!empty($errors['nameOfList'])?'is-invalid':''); ?>"
-
+                    required
                 value="<?php echo htmlspecialchars(@$_POST['nameOfList']) ?>"
             />
             <?php
@@ -163,7 +160,7 @@
         <div class="form-group">
             <label for="categoryId">Category:</label>
             <select name="categoryId"
-
+                        required
                     class="form-control <?php echo (!empty($errors['categoryId'])?'is-invalid':''); ?>">
                 <option value="">--choose category--</option>
                 <?php
@@ -190,6 +187,7 @@
 
 
 <!--displaying items -->
+        <h3>Shop list items</h3>
         <?php
             //logic for displaying
 //            if ( empty($_POST['numberOfRows']) ) {
@@ -221,17 +219,19 @@
             }
         }
 
-        if ($shoplistItems) {
+        if (isset($shoplistItems)) {
+//            <a href="deleteList.php?itemId='.$listItem['id'].'" type="button" class="btn btn-danger">X</a>
             foreach ($shoplistItems as $listItem) {
                 echo
                     '<div class="card">
                                 <div class="card-header flexRow cardContent">
                                     <div>
-                                        <span class="badge badge-info">'.htmlspecialchars($listItem['name']).'</span>
-                                        <span>'.htmlspecialchars($listItem['count']).'</span>
+                                        <span>'.htmlspecialchars($listItem['count']).'× </span>
+                                        <span>'.htmlspecialchars($listItem['name']).'</span>
                                     </div>
                                     <div>
                                         <a href="#" type="button" class="btn btn-danger">X</a>
+                                        
                                         <a href="#" type="button" class="btn btn-secondary">edit</a>
                                         <a href="#" type="button" class="btn btn-success">';
                                             if ($listItem['bought'] == false) {
@@ -249,11 +249,9 @@
 
 
 
-
-
-
-
         ?>
+        <a href="addListItem.php" type="button" id="addListBtn" class="btn btn-secondary">Add new item</a>
+        <hr />
 
 <!-- submit buttons-->
         <?php if (!empty($errors['genericError'])) { echo '<div class="alert alert-danger">'.$errors['genericError'].'</div>';  } ?>
