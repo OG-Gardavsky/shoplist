@@ -216,7 +216,7 @@
                                         <span>'.htmlspecialchars($listItem['name']).'</span>
                                     </div>
                                     <div>
-                                        <a href="#" type="button" class="btn btn-danger">X</a>
+                                        <a href="deleteListItem.php?itemId='.$listItem['id'].'&shopListId='.$listItem['shop_list_id'].'" type="button" class="btn btn-danger">X</a>
                                         
                                         <a href="editListItem.php?itemId='.$listItem['id'].'" type="button" class="btn btn-secondary">edit</a>
                                         <a href="markItemAsFinished.php?itemId='.$listItem['id'].'&shopListId='.$listItem['shop_list_id'].'" type="button" class="btn btn-success">';

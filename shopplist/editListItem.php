@@ -65,7 +65,7 @@
 
             // save when validations pass
             if (empty($errors)) {
-                $nameOfItem = $_POST['nameOfItem'];
+                $nameOfItem = trim($_POST['nameOfItem']);
                 $countOfItem = intval($_POST['countOfItem']);
 
                 //insert of new record
