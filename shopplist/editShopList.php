@@ -6,7 +6,7 @@
 
     $errors=[];
     $selectedCategoryId=(!empty($_POST['categoryId'])?intval($_POST['categoryId']):'');
-    $shopListId = !empty($_REQUEST['shopListId'])?intval($_REQUEST['shopListId']):null;
+    $itemId = !empty($_REQUEST['shopListId'])?intval($_REQUEST['shopListId']):null;
 
     //action for save button
     if(isset($_POST['saveShopListBtn'])) {
@@ -29,7 +29,7 @@
             $categoryId = $_POST['categoryId'];
 
             //insert of not saved list
-            if ($shopListId == null) {
+            if ($itemId == null) {
 
                 $saveQuery=$db->prepare('INSERT INTO sl_shop_lists (user_id, category_id, name) VALUES (:userId, :categoryId, :name);');
                 try {
@@ -52,7 +52,7 @@
                     $updateQuery->execute([
                         ':categoryId'=> $categoryId,
                         ':nameOfList'=>$nameOfList,
-                        ':shopListId'=>$shopListId
+                        ':shopListId'=>$itemId
                     ]);
 
                     //TODO hlaska ze doslo k ulozeni
@@ -69,11 +69,11 @@
 
 
 
-    if ($shopListId != null) {
+    if ($itemId != null) {
 
         $shopListToUpdateQuery = $db->prepare("SELECT * FROM sl_shop_lists WHERE id = ? AND user_id = ? LIMIT 1");
         try {
-            $shopListToUpdateQuery->execute([$shopListId, $currentUserId]);
+            $shopListToUpdateQuery->execute([$itemId, $currentUserId]);
 
             if ($shopListToUpdateQuery->rowCount() == 0) {
                 $errors['genericError'] = 'Shopping list does not exist';
@@ -190,11 +190,11 @@
         <h3>Shop list items</h3>
         <?php
 
-        if ($shopListId != null) {
+        if ($itemId != null) {
 
             $shoplistItemsQuery = $db->prepare("SELECT * FROM sl_items WHERE shop_list_id = ?");
             try {
-                $shoplistItemsQuery->execute([$shopListId]);
+                $shoplistItemsQuery->execute([$itemId]);
 
                 if ($shoplistItemsQuery->rowCount() > 0 ) {
                     $shoplistItems = $shoplistItemsQuery->fetchAll(PDO::FETCH_ASSOC);
@@ -219,7 +219,7 @@
                                         <a href="#" type="button" class="btn btn-danger">X</a>
                                         
                                         <a href="editListItem.php?itemId='.$listItem['id'].'" type="button" class="btn btn-secondary">edit</a>
-                                        <a href="#" type="button" class="btn btn-success">';
+                                        <a href="markItemAsFinished.php?itemId='.$listItem['id'].'&shopListId='.$listItem['shop_list_id'].'" type="button" class="btn btn-success">';
                                             if ($listItem['bought'] == false) {
                                                 echo '&nbsp&nbsp&nbsp';
                                             } else {
@@ -236,7 +236,7 @@
 
 
         ?>
-        <a href="editListItem.php?shopListId=<?php echo $shopListId?>" type="button" id="addListBtn" class="btn btn-secondary">Add new item</a>
+        <a href="editListItem.php?shopListId=<?php echo $itemId?>" type="button" id="addListBtn" class="btn btn-secondary">Add new item</a>
         <hr />
 
 <!-- submit buttons-->
