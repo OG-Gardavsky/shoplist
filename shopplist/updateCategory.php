@@ -33,37 +33,36 @@
         }
 
     } else if ($categoryId != null && isset($_POST['SaveItemBtn'])) {
-
         $nameOfCategory = trim($_POST['nameOfCategory']);
 
         $categoryToUpdateQuery = $db->prepare("SELECT * FROM sl_categories WHERE id = ? AND user_id = ?LIMIT 1");
         try {
             $categoryToUpdateQuery->execute([$categoryId, $currentUserId]);
-
-            if ($categoryToUpdateQuery->rowCount() == 1) {
-
-                $updateQuery=$db->prepare('UPDATE sl_categories SET name=:nameOfCategory WHERE id=:categoryId AND user_id=:userId LIMIT 1;');
-                try {
-
-                    $updateQuery->execute([
-                        ':nameOfCategory'=> $nameOfCategory,
-                        ':categoryId'=> $categoryId,
-                        ':userId'=>$currentUserId
-                    ]);
-
-                    header('location: categoryManagement.php?shopListId='.$shopListId);
-
-
-                } catch (Exception $exception) {
-                    $errors['genericError'] = 'Unexpected application error';
-                }
-
-            } else {
+            if ($categoryToUpdateQuery->rowCount() != 1) {
                 $errors['genericError'] = 'Category does not exist';
             }
 
         } catch (Exception $exception) {
             $errors['genericError'] = 'Unexpected application error';
+        }
+
+        //update itself
+        if (empty($errors)) {
+            $updateQuery=$db->prepare('UPDATE sl_categories SET name=:nameOfCategory WHERE id=:categoryId AND user_id=:userId LIMIT 1;');
+            try {
+
+                $updateQuery->execute([
+                    ':nameOfCategory'=> $nameOfCategory,
+                    ':categoryId'=> $categoryId,
+                    ':userId'=>$currentUserId
+                ]);
+
+                header('location: categoryManagement.php?shopListId='.$shopListId);
+
+
+            } catch (Exception $exception) {
+                $errors['genericError'] = 'Unexpected application error';
+            }
         }
     }
 
