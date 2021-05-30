@@ -108,12 +108,9 @@
 
 
 
-    function displayRows($rowCount) {
-        for ($i = 0; $i<$rowCount; $i++) {
+    function displayRows() {
 
-            $itemNum = $i + 1;
-
-            echo '<div class="flexRow" >';
+        echo '<div class="flexRow" >';
 
 //                echo '<input type="hidden" name="checked" value="false" />';
 //
@@ -122,24 +119,23 @@
 //                echo '</button> </span> ';
 
 
-                echo '<span> <button type="button" class="btn btn-success checkBtnPosition">✓</button> </span> ';
+            echo '<span> <button type="button" class="btn btn-success checkBtnPosition">✓</button> </span> ';
 
-                echo ' <div class="form-group">';
-                    echo '<label for="neco">'.$itemNum.'. item</label>';
-                    echo '<input type="text" name="'.$itemNum.'itemName" id="neco"  class="form-control" value="'
-                    .htmlspecialchars(@$_POST[$itemNum.'itemName']).'"/>';
-                echo '</div>';
-
-                echo '<div class="form-group">';
-                    echo '<label for="name">count</label>';
-                    echo '<input type="number" name="'.$itemNum.'itemCount" id="name" class="form-control" value="'
-                    .htmlspecialchars(@$_POST[$itemNum.'itemCount']).'"/>';
-                echo '</div>';
-
-                echo '<span> <button type="button" class="btn btn-danger delBtnPosition">X</button> </span> ';
-
+            echo ' <div class="form-group">';
+                echo '<label for="neco">'.$itemNum.'. item</label>';
+                echo '<input type="text" name="'.$itemNum.'itemName" id="neco"  class="form-control" value="'
+                .htmlspecialchars().'"/>';
             echo '</div>';
-        }
+
+            echo '<div class="form-group">';
+                echo '<label for="name">count</label>';
+                echo '<input type="number" name="'.$itemNum.'itemCount" id="name" class="form-control" value="'
+                .htmlspecialchars(@$_POST[$itemNum.'itemCount']).'"/>';
+            echo '</div>';
+
+            echo '<span> <button type="button" class="btn btn-danger delBtnPosition">X</button> </span> ';
+
+        echo '</div>';
     }
 
 
@@ -209,6 +205,53 @@
 /*        <input type="hidden" name="numberOfRows" value="<?php echo $_POST['numberOfRows']?>" />*/
 //        <input type="submit" class="btn btn-secondary" name="addRowBtn" value="Add item" />
 //        <hr />
+
+        if ($shopListId != null) {
+
+            $shoplistItemsQuery = $db->prepare("SELECT * FROM sl_items WHERE shop_list_id = ?");
+            try {
+                $shoplistItemsQuery->execute([$shopListId]);
+
+
+                if ($shoplistItemsQuery->rowCount() > 1 ) {
+                    $shoplistItems = $shoplistItemsQuery->fetchAll(PDO::FETCH_ASSOC);
+
+                    foreach ($shoplistItems as $listItem) {
+//                        echo 'name: '.$listItem['name'];
+//                        echo ' count: '.$listItem['count'];
+//                        echo ' bought: '.$listItem['bought'].'<br />';
+
+
+                        echo
+                            '<div class="card">
+                                <div class="card-header flexRow cardContent">
+                                    <div>
+                                        <span class="badge badge-info">'.htmlspecialchars($listItem['name']).'</span>
+                                        <span>'.htmlspecialchars($listItem['count']).'</span>
+                                    </div>
+                                    <div>
+                                        <a href="#" type="button" class="btn btn-danger">X</a>
+                                        <a href="#" type="button" class="btn btn-secondary">edit</a>
+                                        <a href="#" type="button" class="btn btn-success">';
+                                            if ($listItem['bought'] == false) {
+                                                echo '&nbsp&nbsp&nbsp';
+                                            } else {
+                                                echo '✓';
+                                            }
+                                        echo  '</a>
+                                    </div>
+                                </div>
+                            </div>';
+
+                    }
+                }
+
+
+
+            } catch (Exception $exception) {
+                $errors['genericError'] = 'Unexpected application error';
+            }
+        }
 
 
 
