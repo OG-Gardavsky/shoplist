@@ -88,7 +88,7 @@
 
 
         <button type="submit" class="btn btn-primary">Add category</button>
-        <a href="addlist.php" class="btn btn-light">back to shop list</a>
+        <a href="editShopList.php" class="btn btn-light">back to shop list</a>
     </form>
 
 

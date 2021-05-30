@@ -5,7 +5,7 @@
 
 
     $errors=[];
-    $selectedCategory=(!empty($_POST['categoryId'])?intval($_POST['categoryId']):'');
+    $selectedCategoryId=(!empty($_POST['categoryId'])?intval($_POST['categoryId']):'');
 
     //action for save button
     if(isset($_POST['saveShopListBtn'])) {
@@ -36,6 +36,33 @@
                 $errors['genericError'] = 'Error during saving of shop list';
             }
         }
+    }
+
+    $shopListId = !empty($_REQUEST['shopListId'])?$_REQUEST['shopListId']:null;
+
+    if ($shopListId != null) {
+
+        $shopListToUpdateQuery = $db->prepare("SELECT * FROM sl_shop_lists WHERE id = ? AND user_id = ? LIMIT 1");
+        try {
+            $shopListToUpdateQuery->execute([$shopListId, $currentUserId]);
+
+            if ($shopListToUpdateQuery->rowCount() == 0) {
+                $errors['genericError'] = 'Shopping list does not exist';
+            } else {
+                $shopListToUpdate = $shopListToUpdateQuery->fetch(PDO::FETCH_ASSOC);
+            }
+
+
+            $_POST['nameOfList'] = $shopListToUpdate['name'];
+            $selectedCategoryId =  $shopListToUpdate['category_id'];
+
+        } catch (Exception $exception) {
+            $errors['genericError'] = 'Unexpected application error';
+        }
+
+
+
+
     }
 
 
@@ -119,7 +146,7 @@
                         foreach ($categoryList as $category){
 
                             echo '<option value="'.$category['id'].'"'
-                                .($category['id']==$selectedCategory?'selected="selected"':'').'>'
+                                .($category['id']==$selectedCategoryId?'selected="selected"':'').'>'
                                 .htmlspecialchars($category['name'])
                                 .'</option>';
                         }
