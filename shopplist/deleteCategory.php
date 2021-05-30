@@ -30,7 +30,7 @@
             $categoryToDeleteQuery = $db->prepare("DELETE FROM sl_categories WHERE id = ? AND user_id = ? LIMIT 1");
             try {
                 $categoryToDeleteQuery->execute([$categoryId, $currentUserId]);
-                header('location: editCategory.php?shopListId='.$shopListId);
+                header('location: categoryManagement.php?shopListId='.$shopListId);
             } catch (Exception $exception) {
                 $errors['genericError'] = 'Unexpected application error';
             }
@@ -59,7 +59,7 @@
 ?>
     <form method="post">
         <input type="submit" class="btn btn-danger" name="dellCategoryBtn" value="DeleteItem" />
-        <a href="editCategory.php?shopListId=<?php echo $shopListId?>" class="btn btn-light">Back</a>
+        <a href="categoryManagement.php?shopListId=<?php echo $shopListId?>" class="btn btn-light">Back</a>
     </form>
 
 
