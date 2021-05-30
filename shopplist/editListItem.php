@@ -19,6 +19,7 @@
         $errors['genericError'] = 'cannot have itemId and shopListId parameter at the same time';
     }
 
+
     //retrieving data when updating item
     if ($itemId != null) {
 
@@ -32,9 +33,6 @@
                 $listItemToUpdate = $listItemToUpdateQuery->fetch(PDO::FETCH_ASSOC);
             }
 
-
-            $_POST['nameOfItem'] = $listItemToUpdate['name'];
-            $_POST['countOfItem'] =  $listItemToUpdate['count'];
             $shopListId = $listItemToUpdate['shop_list_id'];
 
         } catch (Exception $exception) {
@@ -42,7 +40,6 @@
         }
 
     }
-
 
     //reaction for save button
     if(isset($_POST['SaveItemBtn']) && empty($errors)) {
@@ -69,7 +66,7 @@
             // save when validations pass
             if (empty($errors)) {
                 $nameOfItem = $_POST['nameOfItem'];
-                $countOfItem = $_POST['countOfItem'];
+                $countOfItem = intval($_POST['countOfItem']);
 
                 //insert of new record
                 if ($itemId == null && $shopListId != null) {
@@ -87,7 +84,9 @@
                     } catch (Exception $exception) {
                         $errors['genericError'] = 'Error during saving of shop list';
                     }
-                } else if ($itemId != null) {
+                }
+                else if ($itemId != null) {
+
                     //updating existing
                     $updateQuery=$db->prepare('UPDATE sl_items SET name=:nameOfItem, count=:countOfItem WHERE id=:itemId LIMIT 1;');
                     try {
@@ -100,6 +99,7 @@
                         header('location: editShopList.php?shopListId='.$shopListId);
 
                     } catch (Exception $exception) {
+                        echo $exception;
                         $errors['genericError'] = 'Error during saving of shop list';
                     }
 
@@ -108,6 +108,33 @@
 
         }
     }
+
+
+
+    if ($itemId != null) {
+
+        $listItemToUpdateQuery = $db->prepare("SELECT * FROM sl_items WHERE id = ? LIMIT 1");
+        try {
+            $listItemToUpdateQuery->execute([$itemId]);
+
+            if ($listItemToUpdateQuery->rowCount() == 0) {
+                $errors['genericError'] = 'Item does not exist';
+            } else {
+                $listItemToUpdate = $listItemToUpdateQuery->fetch(PDO::FETCH_ASSOC);
+            }
+
+
+            $_POST['nameOfItem'] = $listItemToUpdate['name'];
+            $_POST['countOfItem'] =  $listItemToUpdate['count'];
+            $shopListId = $listItemToUpdate['shop_list_id'];
+
+        } catch (Exception $exception) {
+            $errors['genericError'] = 'Unexpected application error';
+        }
+
+    }
+
+
 
 
 
