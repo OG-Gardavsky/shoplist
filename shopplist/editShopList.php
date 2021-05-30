@@ -147,7 +147,7 @@
             ?>
         </div>
 
-        <span> <a href="addcategory.php?shopListId=<?php echo $shopListId?>" class="btn btn-light">add new Category</a> </span>
+        <span> <a href="editCategory.php?shopListId=<?php echo $shopListId?>" class="btn btn-light">add new Category</a> </span>
         <hr />
 
 
