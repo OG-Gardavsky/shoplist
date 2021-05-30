@@ -55,7 +55,7 @@
                         ':shopListId'=>$shopListid
                     ]);
 
-                    //TODO hlaska ze doslo k ulozeni
+                    //TODO check ze se to ulozilo
 
                 } catch (Exception $exception) {
                     echo $exception;
@@ -80,7 +80,6 @@
             } else {
                 $shopListToUpdate = $shopListToUpdateQuery->fetch(PDO::FETCH_ASSOC);
             }
-
 
             $_POST['nameOfList'] = $shopListToUpdate['name'];
             $selectedCategoryId =  $shopListToUpdate['category_id'];

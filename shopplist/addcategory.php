@@ -41,11 +41,7 @@
                 $errors['genericError'] = 'Unexpected application error';
             }
 
-
         }
-
-
-
 
     }
 
@@ -60,17 +56,11 @@
 
 ?>
 
-<!--    --><?php
-//        echo 'user id: '.$userId.'<br/>';
-//
-//        foreach ($existingCategories as $category) {
-//            echo $category['id'];
-//        }
-//
-//    ?>
 
 
     <form method="post">
+
+<!--        name input-->
         <div class="form-group">
             <label for="name">Name of category</label>
             <input type="text" name="name" id="name" required class="form-control <?php echo (!empty($errors['name'])?'is-invalid':''); ?>"
@@ -82,7 +72,9 @@
             ?>
         </div>
 
+<!--        error displaying -->
         <?php
+            //error displaying
             if (!empty($errors['genericError'])) { echo '<div class="alert alert-danger">'.$errors['genericError'].'</div>';  }
 
             if ($infoMessage != '') { echo '<div class="alert alert-info">'.$infoMessage.'</div>';  }
@@ -93,6 +85,31 @@
         <button type="submit" class="btn btn-primary">Add category</button>
         <a href="editShopList.php" class="btn btn-light">back to shop list</a>
     </form>
+
+<!-- displaying of created categories -->
+<?php
+
+    $categoriesListQuery = $db->prepare("SELECT * FROM sl_categories WHERE user_id = ?");
+    try {
+        $categoriesListQuery->execute([$currentUserId]);
+        if ($categoriesListQuery->rowCount() > 0) {
+            $categoriesList = $categoriesListQuery->fetchAll(PDO::FETCH_ASSOC);
+        }
+
+    } catch (Exception $exception) {
+        $errors['genericError'] = 'Unexpected application error';
+    }
+
+    if ($categoriesList) {
+        foreach ($categoriesList as $category) {
+            echo $category['id'].' '.$category['name'].'<br />';
+        }
+    }
+
+
+
+
+?>
 
 
 <?php
