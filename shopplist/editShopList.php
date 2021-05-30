@@ -6,39 +6,71 @@
 
     $errors=[];
     $selectedCategoryId=(!empty($_POST['categoryId'])?intval($_POST['categoryId']):'');
+    $shopListId = !empty($_REQUEST['shopListId'])?intval($_REQUEST['shopListId']):null;
 
     //action for save button
     if(isset($_POST['saveShopListBtn'])) {
 
         if ($_POST['nameOfList'] == '' || $_POST['nameOfList'] == null ) {
             $errors['nameOfList'] = 'name cannot be blank';
+
+            //chceck na delku nazvu
         }
 
         if ($_POST['categoryId'] == '' || $_POST['categoryId'] == null ) {
             $errors['categoryId'] = 'category cannot be blank';
+
+            //dodelat chceck jestli kategorie patri userovi
         }
 
+        // insert or update of shop list
         if (empty($errors)) {
             $nameOfList = trim($_POST['nameOfList']);
             $categoryId = $_POST['categoryId'];
 
-            $saveQuery=$db->prepare('INSERT INTO sl_shop_lists (user_id, category_id, name) VALUES (:user, :categoryId, :name);');
-            try {
-                $saveQuery->execute([
-                    ':user'=> $currentUserId,
-                    ':categoryId'=> $categoryId,
-                    ':name'=>$nameOfList
-                ]);
+            //insert of not saved list
+            if ($shopListId == null) {
+                $saveQuery=$db->prepare('INSERT INTO sl_shop_lists (user_id, category_id, name) VALUES (:userId, :categoryId, :name);');
+                try {
+                    $saveQuery->execute([
+                        ':userId'=> $currentUserId,
+                        ':categoryId'=> $categoryId,
+                        ':name'=>$nameOfList
+                    ]);
 
-                header('location: index.php');
+                    header('location: index.php');
 
-            } catch (Exception $exception) {
-                $errors['genericError'] = 'Error during saving of shop list';
+                } catch (Exception $exception) {
+                    $errors['genericError'] = 'Error during saving of shop list';
+                }
+            } else {
+                //update of existing list
+
+                $updateQuery=$db->prepare('UPDATE sl_shop_lists SET category_id=:categoryId, name=:nameOfList WHERE id=30 LIMIT 1;');
+
+                try {
+                    echo 'shop list id '.$shopListId.'<br />';
+
+                    $updateQuery->execute([
+                        ':userId'=> $currentUserId,
+                        ':categoryId'=> $categoryId,
+                        ':nameOfList'=>$nameOfList,
+                        ':shopListId'=>$shopListId
+                    ]);
+
+                    //hlaska ze doslo k ulozeni
+
+                } catch (Exception $exception) {
+                    echo $exception;
+                    $errors['genericError'] = 'Error during saving of shop list';
+                }
             }
+
+
         }
     }
 
-    $shopListId = !empty($_REQUEST['shopListId'])?$_REQUEST['shopListId']:null;
+
 
     if ($shopListId != null) {
 
