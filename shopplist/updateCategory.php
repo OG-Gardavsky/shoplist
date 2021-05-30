@@ -14,14 +14,15 @@
     $shopListId = !empty($_REQUEST['shopListId'])?intval($_REQUEST['shopListId']):null;
 
 
-    if ($categoryId != null) {
+
+    if ($categoryId != null && !isset($_POST['SaveItemBtn'])) {
 
         $categoryToUpdateQuery = $db->prepare("SELECT * FROM sl_categories WHERE id = ? AND user_id = ?LIMIT 1");
         try {
             $categoryToUpdateQuery->execute([$categoryId, $currentUserId]);
 
             if ($categoryToUpdateQuery->rowCount() == 0) {
-                $errors['genericError'] = 'Category does not exist 1';
+                $errors['genericError'] = 'Category does not exist';
             } else {
                 $categoryToUpdate = $categoryToUpdateQuery->fetch(PDO::FETCH_ASSOC);
                 $_POST['nameOfCategory']= $categoryToUpdate['name'];
@@ -31,13 +32,42 @@
             $errors['genericError'] = 'Unexpected application error';
         }
 
-    } else {
-        $errors['genericError'] = 'Category does not exist 2 ';
+    } else if ($categoryId != null && isset($_POST['SaveItemBtn'])) {
+
+        $nameOfCategory = trim($_POST['nameOfCategory']);
+
+        $categoryToUpdateQuery = $db->prepare("SELECT * FROM sl_categories WHERE id = ? AND user_id = ?LIMIT 1");
+        try {
+            $categoryToUpdateQuery->execute([$categoryId, $currentUserId]);
+
+            if ($categoryToUpdateQuery->rowCount() == 1) {
+
+                $updateQuery=$db->prepare('UPDATE sl_categories SET name=:nameOfCategory WHERE id=:categoryId AND user_id=:userId LIMIT 1;');
+                try {
+
+                    $updateQuery->execute([
+                        ':nameOfCategory'=> $nameOfCategory,
+                        ':categoryId'=> $categoryId,
+                        ':userId'=>$currentUserId
+                    ]);
+
+                    header('location: categoryManagement.php?shopListId='.$shopListId);
+
+
+                } catch (Exception $exception) {
+                    $errors['genericError'] = 'Unexpected application error';
+                }
+
+            } else {
+                $errors['genericError'] = 'Category does not exist';
+            }
+
+        } catch (Exception $exception) {
+            $errors['genericError'] = 'Unexpected application error';
+        }
     }
 
-    if (isset($categoryToUpdate)) {
 
-    }
 
 
 
