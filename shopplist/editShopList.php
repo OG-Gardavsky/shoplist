@@ -210,7 +210,7 @@
             try {
                 $shoplistItemsQuery->execute([$shopListId]);
 
-                if ($shoplistItemsQuery->rowCount() > 1 ) {
+                if ($shoplistItemsQuery->rowCount() > 0 ) {
                     $shoplistItems = $shoplistItemsQuery->fetchAll(PDO::FETCH_ASSOC);
                 }
 
@@ -250,7 +250,7 @@
 
 
         ?>
-        <a href="addListItem.php" type="button" id="addListBtn" class="btn btn-secondary">Add new item</a>
+        <a href="addListItem.php?shopListId=<?php echo $shopListId?>" type="button" id="addListBtn" class="btn btn-secondary">Add new item</a>
         <hr />
 
 <!-- submit buttons-->

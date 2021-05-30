@@ -89,6 +89,7 @@
         ?>
 
 
+<!--        TODO spravnej redirect-->
         <button type="submit" class="btn btn-primary">Add category</button>
         <a href="editShopList.php" class="btn btn-light">back to shop list</a>
     </form>

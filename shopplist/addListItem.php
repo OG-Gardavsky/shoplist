@@ -10,11 +10,18 @@
     $errors = [];
 
     $itemId = !empty($_REQUEST['itemId'])?$_REQUEST['itemId']:null;
+    $shopListId = !empty($_REQUEST['shopListId'])?intval($_REQUEST['shopListId']):null;
 
-    //TODO if to neni asociovany ani s listem ani to neni existujici zaznam => exception
+
+    if ($itemId == null && $shopListId == null) {
+        $errors['genericError'] = 'Not clear with which shopplist should be item asociated';
+    } else if ($itemId != null && $shopListId != null) {
+        $errors['genericError'] = 'cannot have itemId and shopListId parameter at the same time';
+    }
 
 
-    if(isset($_POST['SaveItemBtn'])) {
+    //reaction for save button
+    if(isset($_POST['SaveItemBtn']) && empty($errors)) {
         //check of null
         if ($_POST['nameOfItem'] == '' || $_POST['nameOfItem'] == null ) {
             $errors['nameOfItem'] = 'Name of item cannot be blank';
@@ -37,18 +44,21 @@
 
             // save when validations pass
             if (empty($errors)) {
-                //insert of new record
-                if ($shopListId == null) {
+                $nameOfItem = $_POST['nameOfItem'];
+                $countOfItem = $_POST['countOfItem'];
 
-                    $saveQuery=$db->prepare('INSERT INTO sl_shop_lists (user_id, category_id, name) VALUES (:userId, :categoryId, :name);');
+                //insert of new record
+                if ($itemId == null && $shopListId != null) {
+
+                    $saveQuery=$db->prepare('INSERT INTO sl_items (shop_list_id, name, count) VALUES (:shopListId, :nameOfItem, :countOfItem);');
                     try {
                         $saveQuery->execute([
-                            ':userId'=> $currentUserId,
-                            ':categoryId'=> $categoryId,
-                            ':name'=>$nameOfList
+                            ':shopListId'=> $shopListId,
+                            ':nameOfItem'=> $nameOfItem,
+                            ':countOfItem'=>$countOfItem
                         ]);
 
-                        header('location: index.php');
+                        header('location: editShopList.php?shopListId='.$shopListId);
 
                     } catch (Exception $exception) {
                         $errors['genericError'] = 'Error during saving of shop list';
@@ -61,9 +71,7 @@
 
 
 
-    if (!empty($errors['genericError'])) {
-        echo '<div class="alert alert-danger">' . $errors['genericError'] . '</div>';
-    }
+
 
 
 ?>
@@ -99,11 +107,15 @@
 
         </div>
 
-
+        <?php
+            if (!empty($errors['genericError'])) {
+                echo '<div class="alert alert-danger">' . $errors['genericError'] . '</div>';
+            }
+        ?>
 
         <input type="submit" class="btn btn-primary" name="SaveItemBtn" value="Save item" />
 <!--        TODO hardcodovany  if else - pokud bude sholist id tak zpatky tam jinak na index-->
-        <a href="editShopList.php?shopListId=31" class="btn btn-light">Back</a>
+        <a href="editShopList.php?shopListId=<?php echo $shopListId?>" class="btn btn-light">Back</a>
     </form>
 
 
