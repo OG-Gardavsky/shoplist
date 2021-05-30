@@ -189,20 +189,6 @@
 <!--displaying items -->
         <h3>Shop list items</h3>
         <?php
-            //logic for displaying
-//            if ( empty($_POST['numberOfRows']) ) {
-//                $_POST['numberOfRows'] = 1;
-//            }
-//
-//            if(isset($_POST['addRowBtn'])) {
-//                $_POST['numberOfRows'] = $_POST['numberOfRows'] + 1;
-//            }
-//
-//            displayRows(@$_POST['numberOfRows']);
-
-/*        <input type="hidden" name="numberOfRows" value="<?php echo $_POST['numberOfRows']?>" />*/
-//        <input type="submit" class="btn btn-secondary" name="addRowBtn" value="Add item" />
-//        <hr />
 
         if ($shopListId != null) {
 
@@ -232,7 +218,7 @@
                                     <div>
                                         <a href="#" type="button" class="btn btn-danger">X</a>
                                         
-                                        <a href="#" type="button" class="btn btn-secondary">edit</a>
+                                        <a href="editListItem.php?itemId='.$listItem['id'].'" type="button" class="btn btn-secondary">edit</a>
                                         <a href="#" type="button" class="btn btn-success">';
                                             if ($listItem['bought'] == false) {
                                                 echo '&nbsp&nbsp&nbsp';
@@ -250,7 +236,7 @@
 
 
         ?>
-        <a href="addListItem.php?shopListId=<?php echo $shopListId?>" type="button" id="addListBtn" class="btn btn-secondary">Add new item</a>
+        <a href="editListItem.php?shopListId=<?php echo $shopListId?>" type="button" id="addListBtn" class="btn btn-secondary">Add new item</a>
         <hr />
 
 <!-- submit buttons-->
