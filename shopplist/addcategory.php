@@ -6,6 +6,8 @@
     $errors=[];
     $infoMessage = '';
 
+    $shopListId = !empty($_REQUEST['shopListId'])?intval($_REQUEST['shopListId']):null;
+
     if (!empty(@$_POST['name'])) {
 
         $categoryName =  trim(@$_POST['name']);
@@ -46,11 +48,6 @@
     }
 
 
-
-
-
-
-
     $pageTitle='Add new category';
     include 'inc/header.php';
 
@@ -83,7 +80,7 @@
 
 <!--        TODO spravnej redirect-->
         <button type="submit" class="btn btn-primary">Add category</button>
-        <a href="editShopList.php" class="btn btn-light">back to shop list</a>
+        <a href="editShopList.php<?php if ($shopListId != null) { echo '?shopListId='.$shopListId; }?>" class="btn btn-light">back to shop list</a>
     </form>
 
 <!-- displaying of created categories -->

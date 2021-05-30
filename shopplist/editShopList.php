@@ -6,7 +6,7 @@
 
     $errors=[];
     $selectedCategoryId=(!empty($_POST['categoryId'])?intval($_POST['categoryId']):'');
-    $shopListid = !empty($_REQUEST['shopListId'])?intval($_REQUEST['shopListId']):null;
+    $shopListId = !empty($_REQUEST['shopListId'])?intval($_REQUEST['shopListId']):null;
 
     //action for save button
     if(isset($_POST['saveShopListBtn'])) {
@@ -29,7 +29,7 @@
             $categoryId = $_POST['categoryId'];
 
             //insert of not saved list
-            if ($shopListid == null) {
+            if ($shopListId == null) {
 
                 $saveQuery=$db->prepare('INSERT INTO sl_shop_lists (user_id, category_id, name) VALUES (:userId, :categoryId, :name);');
                 try {
@@ -52,7 +52,7 @@
                     $updateQuery->execute([
                         ':categoryId'=> $categoryId,
                         ':nameOfList'=>$nameOfList,
-                        ':shopListId'=>$shopListid
+                        ':shopListId'=>$shopListId
                     ]);
 
                     //TODO check ze se to ulozilo
@@ -69,11 +69,11 @@
 
 
 
-    if ($shopListid != null) {
+    if ($shopListId != null) {
 
         $shopListToUpdateQuery = $db->prepare("SELECT * FROM sl_shop_lists WHERE id = ? AND user_id = ? LIMIT 1");
         try {
-            $shopListToUpdateQuery->execute([$shopListid, $currentUserId]);
+            $shopListToUpdateQuery->execute([$shopListId, $currentUserId]);
 
             if ($shopListToUpdateQuery->rowCount() == 0) {
                 $errors['genericError'] = 'Shopping list does not exist';
@@ -147,7 +147,7 @@
             ?>
         </div>
 
-        <span> <a href="addcategory.php" class="btn btn-light">add new Category</a> </span>
+        <span> <a href="addcategory.php?shopListId=<?php echo $shopListId?>" class="btn btn-light">add new Category</a> </span>
         <hr />
 
 
@@ -156,12 +156,12 @@
         <?php
 
             // check if exist shoplist in DB
-            if ($shopListid != null) {
+            if ($shopListId != null) {
                 echo '<h3>Shop list items</h3>';
 
                 $shoplistItemsQuery = $db->prepare("SELECT * FROM sl_items WHERE shop_list_id = ?");
                 try {
-                    $shoplistItemsQuery->execute([$shopListid]);
+                    $shoplistItemsQuery->execute([$shopListId]);
 
                     if ($shoplistItemsQuery->rowCount() > 0 ) {
                         $shoplistItems = $shoplistItemsQuery->fetchAll(PDO::FETCH_ASSOC);
@@ -200,9 +200,9 @@
                 }
             }
 
-            if ($shopListid != null) {
+            if ($shopListId != null) {
                 //button for adding new item
-                echo '<a href="editListItem.php?shopListId='.$shopListid.'" type="button" id="addListBtn" class="btn btn-secondary">Add new item</a><hr />';
+                echo '<a href="editListItem.php?shopListId='.$shopListId.'" type="button" id="addListBtn" class="btn btn-secondary">Add new item</a><hr />';
             }
 
 
