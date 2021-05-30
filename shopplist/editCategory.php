@@ -96,7 +96,7 @@
         $errors['genericError'] = 'Unexpected application error';
     }
 
-    if ($categoriesList) {
+    if (isset($categoriesList)) {
         echo '<hr />';
         foreach ($categoriesList as $category) {
 

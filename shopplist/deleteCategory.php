@@ -27,7 +27,7 @@
 
         //in case of submitting delete
         if(isset($_POST['dellCategoryBtn'])) {
-            $categoryToDeleteQuery = $db->prepare("DELETE FROM sl_items WHERE id = ? AND user_id = ? LIMIT 1");
+            $categoryToDeleteQuery = $db->prepare("DELETE FROM sl_categories WHERE id = ? AND user_id = ? LIMIT 1");
             try {
                 $categoryToDeleteQuery->execute([$categoryId, $currentUserId]);
                 header('location: editCategory.php?shopListId='.$shopListId);
@@ -36,7 +36,6 @@
             }
 
         }
-
 
         if (isset($categoryToDelete)) {
             echo '<div class="alert alert-info">Are you sure you want to delete:"'.
