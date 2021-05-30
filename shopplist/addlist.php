@@ -7,7 +7,7 @@
     $errors=[];
     $selectedCategory=(!empty($_POST['categoryId'])?intval($_POST['categoryId']):'');
 
-
+    //action for save button
     if(isset($_POST['saveShopListBtn'])) {
 
         if ($_POST['nameOfList'] == '' || $_POST['nameOfList'] == null ) {
@@ -30,12 +30,12 @@
                     ':name'=>$nameOfList
                 ]);
 
+                header('location: index.php');
+
             } catch (Exception $exception) {
                 $errors['genericError'] = 'Error during saving of shop list';
             }
         }
-
-
     }
 
 
@@ -140,21 +140,25 @@
 <!--displaying items -->
         <?php
             //logic for displaying
-            if ( empty($_POST['numberOfRows']) ) {
-                $_POST['numberOfRows'] = 1;
-            }
+//            if ( empty($_POST['numberOfRows']) ) {
+//                $_POST['numberOfRows'] = 1;
+//            }
+//
+//            if(isset($_POST['addRowBtn'])) {
+//                $_POST['numberOfRows'] = $_POST['numberOfRows'] + 1;
+//            }
+//
+//            displayRows(@$_POST['numberOfRows']);
 
-            if(isset($_POST['addRowBtn'])) {
-                $_POST['numberOfRows'] = $_POST['numberOfRows'] + 1;
-            }
+/*        <input type="hidden" name="numberOfRows" value="<?php echo $_POST['numberOfRows']?>" />*/
+//        <input type="submit" class="btn btn-secondary" name="addRowBtn" value="Add item" />
+//        <hr />
 
-            displayRows(@$_POST['numberOfRows']);
+
         ?>
 
 <!-- submit buttons-->
-        <input type="hidden" name="numberOfRows" value="<?php echo $_POST['numberOfRows']?>" />
-        <input type="submit" class="btn btn-secondary" name="addRowBtn" value="Add item" />
-        <hr />
+
 
         <?php if (!empty($errors['genericError'])) { echo '<div class="alert alert-danger">'.$errors['genericError'].'</div>';  } ?>
 

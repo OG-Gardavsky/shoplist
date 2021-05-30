@@ -59,7 +59,7 @@
 
 ?>
     <form method="post">
-        <input type="submit" class="btn btn-danger" name="delListBtn" value="Delete item" />
+        <input type="submit" class="btn btn-danger" name="delListBtn" value="Delete list" />
         <a href="index.php" class="btn btn-light">Back</a>
     </form>
 
