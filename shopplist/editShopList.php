@@ -6,7 +6,7 @@
 
     $errors=[];
     $selectedCategoryId=(!empty($_POST['categoryId'])?intval($_POST['categoryId']):'');
-    $itemId = !empty($_REQUEST['shopListId'])?intval($_REQUEST['shopListId']):null;
+    $shopListid = !empty($_REQUEST['shopListId'])?intval($_REQUEST['shopListId']):null;
 
     //action for save button
     if(isset($_POST['saveShopListBtn'])) {
@@ -29,7 +29,7 @@
             $categoryId = $_POST['categoryId'];
 
             //insert of not saved list
-            if ($itemId == null) {
+            if ($shopListid == null) {
 
                 $saveQuery=$db->prepare('INSERT INTO sl_shop_lists (user_id, category_id, name) VALUES (:userId, :categoryId, :name);');
                 try {
@@ -52,7 +52,7 @@
                     $updateQuery->execute([
                         ':categoryId'=> $categoryId,
                         ':nameOfList'=>$nameOfList,
-                        ':shopListId'=>$itemId
+                        ':shopListId'=>$shopListid
                     ]);
 
                     //TODO hlaska ze doslo k ulozeni
@@ -69,11 +69,11 @@
 
 
 
-    if ($itemId != null) {
+    if ($shopListid != null) {
 
         $shopListToUpdateQuery = $db->prepare("SELECT * FROM sl_shop_lists WHERE id = ? AND user_id = ? LIMIT 1");
         try {
-            $shopListToUpdateQuery->execute([$itemId, $currentUserId]);
+            $shopListToUpdateQuery->execute([$shopListid, $currentUserId]);
 
             if ($shopListToUpdateQuery->rowCount() == 0) {
                 $errors['genericError'] = 'Shopping list does not exist';
@@ -187,57 +187,63 @@
 
 
 <!--displaying items -->
-        <h3>Shop list items</h3>
+
         <?php
 
-        if ($itemId != null) {
+            // check if exist shoplist in DB
+            if ($shopListid != null) {
+                echo '<h3>Shop list items</h3>';
 
-            $shoplistItemsQuery = $db->prepare("SELECT * FROM sl_items WHERE shop_list_id = ?");
-            try {
-                $shoplistItemsQuery->execute([$itemId]);
+                $shoplistItemsQuery = $db->prepare("SELECT * FROM sl_items WHERE shop_list_id = ?");
+                try {
+                    $shoplistItemsQuery->execute([$shopListid]);
 
-                if ($shoplistItemsQuery->rowCount() > 0 ) {
-                    $shoplistItems = $shoplistItemsQuery->fetchAll(PDO::FETCH_ASSOC);
+                    if ($shoplistItemsQuery->rowCount() > 0 ) {
+                        $shoplistItems = $shoplistItemsQuery->fetchAll(PDO::FETCH_ASSOC);
+                    }
+
+                } catch (Exception $exception) {
+                    $errors['genericError'] = 'Unexpected application error';
                 }
-
-            } catch (Exception $exception) {
-                $errors['genericError'] = 'Unexpected application error';
             }
-        }
 
-        if (isset($shoplistItems)) {
-//            <a href="deleteList.php?itemId='.$listItem['id'].'" type="button" class="btn btn-danger">X</a>
-            foreach ($shoplistItems as $listItem) {
-                echo
-                    '<div class="card">
-                                <div class="card-header flexRow cardContent">
-                                    <div>
-                                        <span>'.htmlspecialchars($listItem['count']).'× </span>
-                                        <span>'.htmlspecialchars($listItem['name']).'</span>
-                                    </div>
-                                    <div>
-                                        <a href="deleteListItem.php?itemId='.$listItem['id'].'&shopListId='.$listItem['shop_list_id'].'" type="button" class="btn btn-danger">X</a>
-                                        
-                                        <a href="editListItem.php?itemId='.$listItem['id'].'" type="button" class="btn btn-secondary">edit</a>
-                                        <a href="markItemAsFinished.php?itemId='.$listItem['id'].'&shopListId='.$listItem['shop_list_id'].'" type="button" class="btn btn-success">';
-                                            if ($listItem['bought'] == false) {
-                                                echo '&nbsp&nbsp&nbsp';
-                                            } else {
-                                                echo '✓';
-                                            }
-                                echo  '</a>
-                                    </div>
+            // based on previous if
+            if (isset($shoplistItems)) {
+
+                foreach ($shoplistItems as $listItem) {
+                    echo
+                        '<div class="card">
+                            <div class="card-header flexRow cardContent">
+                                <div>
+                                    <span>'.htmlspecialchars($listItem['count']).'× </span>
+                                    <span>'.htmlspecialchars($listItem['name']).'</span>
                                 </div>
-                            </div>';
-
+                                <div>
+                                    <a href="deleteListItem.php?itemId='.$listItem['id'].'&shopListId='.$listItem['shop_list_id'].'" type="button" class="btn btn-danger">X</a>
+                                    
+                                    <a href="editListItem.php?itemId='.$listItem['id'].'" type="button" class="btn btn-secondary">edit</a>
+                                    <a href="markItemAsFinished.php?itemId='.$listItem['id'].'&shopListId='.$listItem['shop_list_id'].'" type="button" class="btn btn-success">';
+                                        if ($listItem['bought'] == false) {
+                                            echo '&nbsp&nbsp&nbsp';
+                                        } else {
+                                            echo '✓';
+                                        }
+                            echo  '</a>
+                                </div>
+                            </div>
+                        </div>';
+                }
             }
-        }
+
+            if ($shopListid != null) {
+                //button for adding new item
+                echo '<a href="editListItem.php?shopListId='.$shopListid.'" type="button" id="addListBtn" class="btn btn-secondary">Add new item</a><hr />';
+            }
 
 
 
         ?>
-        <a href="editListItem.php?shopListId=<?php echo $itemId?>" type="button" id="addListBtn" class="btn btn-secondary">Add new item</a>
-        <hr />
+
 
 <!-- submit buttons-->
         <?php if (!empty($errors['genericError'])) { echo '<div class="alert alert-danger">'.$errors['genericError'].'</div>';  } ?>
