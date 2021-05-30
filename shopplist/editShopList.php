@@ -30,6 +30,7 @@
 
             //insert of not saved list
             if ($shopListId == null) {
+
                 $saveQuery=$db->prepare('INSERT INTO sl_shop_lists (user_id, category_id, name) VALUES (:userId, :categoryId, :name);');
                 try {
                     $saveQuery->execute([
@@ -44,19 +45,17 @@
                     $errors['genericError'] = 'Error during saving of shop list';
                 }
             } else {
-                //update of existing list
-
-                $updateQuery=$db->prepare('UPDATE sl_shop_lists SET category_id=:categoryId, name=:nameOfList WHERE id=30 LIMIT 1;');
-
+                //update of existing
+                $updateQuery=$db->prepare('UPDATE sl_shop_lists SET category_id=:categoryId, name=:nameOfList WHERE id=:shopListId LIMIT 1;');
                 try {
                     echo 'shop list id '.$shopListId.'<br />';
 
                     $updateQuery->execute([
-                        ':userId'=> $currentUserId,
                         ':categoryId'=> $categoryId,
                         ':nameOfList'=>$nameOfList,
                         ':shopListId'=>$shopListId
                     ]);
+
 
                     //hlaska ze doslo k ulozeni
 
