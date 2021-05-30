@@ -101,8 +101,22 @@
     }
 
     if ($categoriesList) {
+        echo '<hr />';
         foreach ($categoriesList as $category) {
-            echo $category['id'].' '.$category['name'].'<br />';
+
+            echo '<div class="card">';
+                echo '<div class="card-header flexRow cardContent">';
+
+                    echo '<span>'.htmlspecialchars($category['name']).'</span>';
+
+                    echo '<div>';
+//                        echo '<a href="deleteListItem.php?itemId='.$listItem['id'].'&shopListId='.$listItem['shop_list_id'].'" type="button" class="btn btn-danger">X</a>'
+                        echo '<a href="" type="button" class="btn btn-secondary">edit</a>';
+                        echo '<a href="" type="button" class="btn btn-danger">X</a>';
+                    echo '</div>';
+
+                echo '</div>';
+            echo '</div>';
         }
     }
 
