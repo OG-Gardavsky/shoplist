@@ -212,18 +212,19 @@
             try {
                 $shoplistItemsQuery->execute([$shopListId]);
 
-
                 if ($shoplistItemsQuery->rowCount() > 1 ) {
                     $shoplistItems = $shoplistItemsQuery->fetchAll(PDO::FETCH_ASSOC);
+                }
 
-                    foreach ($shoplistItems as $listItem) {
-//                        echo 'name: '.$listItem['name'];
-//                        echo ' count: '.$listItem['count'];
-//                        echo ' bought: '.$listItem['bought'].'<br />';
+            } catch (Exception $exception) {
+                $errors['genericError'] = 'Unexpected application error';
+            }
+        }
 
-
-                        echo
-                            '<div class="card">
+        if ($shoplistItems) {
+            foreach ($shoplistItems as $listItem) {
+                echo
+                    '<div class="card">
                                 <div class="card-header flexRow cardContent">
                                     <div>
                                         <span class="badge badge-info">'.htmlspecialchars($listItem['name']).'</span>
@@ -238,20 +239,16 @@
                                             } else {
                                                 echo '✓';
                                             }
-                                        echo  '</a>
+                                echo  '</a>
                                     </div>
                                 </div>
                             </div>';
 
-                    }
-                }
-
-
-
-            } catch (Exception $exception) {
-                $errors['genericError'] = 'Unexpected application error';
             }
         }
+
+
+
 
 
 
