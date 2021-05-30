@@ -10,6 +10,8 @@
 
         $categoryName =  trim(@$_POST['name']);
 
+        //TODO check delky nazvu
+
 
         $duplicityCheck = $db->prepare("SELECT * FROM sl_categories WHERE user_id = ? AND name = ?");
         try {

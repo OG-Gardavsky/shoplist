@@ -14,13 +14,13 @@
         if ($_POST['nameOfList'] == '' || $_POST['nameOfList'] == null ) {
             $errors['nameOfList'] = 'name cannot be blank';
 
-            //chceck na delku nazvu
+            //TODO chceck na delku nazvu
         }
 
         if ($_POST['categoryId'] == '' || $_POST['categoryId'] == null ) {
             $errors['categoryId'] = 'category cannot be blank';
 
-            //dodelat chceck jestli kategorie patri userovi
+            //TODO chceck jestli kategorie patri userovi
         }
 
         // insert or update of shop list
@@ -48,7 +48,6 @@
                 //update of existing
                 $updateQuery=$db->prepare('UPDATE sl_shop_lists SET category_id=:categoryId, name=:nameOfList WHERE id=:shopListId LIMIT 1;');
                 try {
-                    echo 'shop list id '.$shopListId.'<br />';
 
                     $updateQuery->execute([
                         ':categoryId'=> $categoryId,
@@ -56,8 +55,7 @@
                         ':shopListId'=>$shopListId
                     ]);
 
-
-                    //hlaska ze doslo k ulozeni
+                    //TODO hlaska ze doslo k ulozeni
 
                 } catch (Exception $exception) {
                     echo $exception;
@@ -213,11 +211,11 @@
 //        <hr />
 
 
+
+
         ?>
 
 <!-- submit buttons-->
-
-
         <?php if (!empty($errors['genericError'])) { echo '<div class="alert alert-danger">'.$errors['genericError'].'</div>';  } ?>
 
 
