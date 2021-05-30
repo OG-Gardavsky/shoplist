@@ -33,6 +33,7 @@
         }
 
     } else if ($categoryId != null && isset($_POST['SaveItemBtn'])) {
+
         $nameOfCategory = trim($_POST['nameOfCategory']);
 
         $categoryToUpdateQuery = $db->prepare("SELECT * FROM sl_categories WHERE id = ? AND user_id = ?LIMIT 1");
@@ -64,6 +65,8 @@
                 $errors['genericError'] = 'Unexpected application error';
             }
         }
+    } else if ($categoryId == null) {
+        $errors['genericError'] = 'Category to update is not specified';
     }
 
 
