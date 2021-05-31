@@ -77,7 +77,7 @@
                     <div>
                         <a href="deleteList.php?shopListId='.$shopList['shopListId'].'" type="button" class="btn btn-danger">X</a>
                         <a href="editShopList.php?shopListId='.$shopList['shopListId'].'" type="button" class="btn btn-secondary">edit / view</a>
-                        <a href="markListAsFinished.php?shopListId='.$shopList['shopListId'].'" type="button" class="btn btn-success">';
+                        <a href="markListAsFinished.php?shopListId='.$shopList['shopListId'].'" type="button" class="btn success">';
                                if ($shopList['finished'] == false) {
                                    echo '&nbsp&nbsp&nbsp';
                                } else {
@@ -90,7 +90,6 @@
 
         }
     ?>
-
 
 
 

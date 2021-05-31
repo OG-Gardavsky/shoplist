@@ -48,6 +48,10 @@ footer {
     margin-top: 5px;
 }
 
+.success {
+    border-color: #04AA6D;
+    color: green;
+}
 
 
 .card {
