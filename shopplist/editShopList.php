@@ -5,6 +5,7 @@
 
 
     $errors=[];
+    $infoMessage = null;
     $selectedCategoryId=(!empty($_POST['categoryId'])?intval($_POST['categoryId']):'');
     $shopListId = !empty($_REQUEST['shopListId'])?intval($_REQUEST['shopListId']):null;
 
@@ -55,7 +56,7 @@
                         ':shopListId'=>$shopListId
                     ]);
 
-                    //TODO check ze se to ulozilo
+                    $infoMessage = 'Changes were successfully saved.';
 
                 } catch (Exception $exception) {
                     echo $exception;
@@ -210,10 +211,15 @@
         ?>
 
 
-<!-- submit buttons-->
-        <?php if (!empty($errors['genericError'])) { echo '<div class="alert alert-danger">'.$errors['genericError'].'</div>';  } ?>
+<!-- error / info displaying-->
+        <?php
+            if (!empty($errors['genericError'])) { echo '<div class="alert alert-danger">'.$errors['genericError'].'</div>';  }
+            if ($infoMessage != null) { echo '<div class="alert alert-info">'.$infoMessage.'</div>';  }
+            $infoMessage = null;
+        ?>
 
 
+        <!-- submit buttons-->
         <input type="submit" class="btn btn-primary" name="saveShopListBtn" value="Save shopping list" />
         <a href="index.php" class="btn btn-light">Back</a>
     </form>
