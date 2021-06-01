@@ -12,7 +12,7 @@
 
         <link rel="stylesheet" href="inc/style.css">
     </head>
-    <body>
+    <body class="d-flex flex-column min-vh-100">
         <header class="container bg-dark">
             <a href="index.php">
                 <h1 class="text-white py-4 px-2">Shop list</h1>
@@ -27,6 +27,6 @@
 
             ?>
         </header>
-        <main class="container pt-2">
+        <main class="container pt-2 main">
         <h2><?php echo (!empty($pageTitle) ? $pageTitle : '')?></h2>
         <hr />
