@@ -1,4 +1,5 @@
 <?php
+    $maxNameCharLength = 50;
 
     require 'inc/db.php';
     require 'user_required.php';
@@ -14,20 +15,24 @@
 
         if ($_POST['nameOfList'] == '' || $_POST['nameOfList'] == null ) {
             $errors['nameOfList'] = 'name cannot be blank';
-
-            //TODO chceck na delku nazvu
         }
 
         if ($_POST['categoryId'] == '' || $_POST['categoryId'] == null ) {
             $errors['categoryId'] = 'category cannot be blank';
+        }
 
-            //TODO chceck jestli kategorie patri userovi
+
+        if (empty($errors)) {
+            $nameOfList = trim($_POST['nameOfList']);
+            $categoryId = $_POST['categoryId'];
+
+            if (strlen($nameOfList) > $maxNameCharLength) {
+                $errors['nameOfList'] = 'lenght cannot be more than '.$maxNameCharLength.' characters';
+            }
         }
 
         // insert or update of shop list
         if (empty($errors)) {
-            $nameOfList = trim($_POST['nameOfList']);
-            $categoryId = $_POST['categoryId'];
 
             //insert of not saved list
             if ($shopListId == null) {

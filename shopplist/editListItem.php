@@ -59,7 +59,7 @@
             }
 
             if (strlen($_POST['nameOfItem']) > $maxNameCharLength) {
-                $errors['nameOfItem'] = 'Name of item has to be shorter than'.$maxNameCharLength.'characters';
+                $errors['nameOfItem'] = 'Name of item has to be shorter than '.$maxNameCharLength.' characters';
             }
 
             // save when validations pass
