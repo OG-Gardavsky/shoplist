@@ -11,10 +11,12 @@
         <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 
         <link rel="stylesheet" href="inc/style.css">
+        <link rel="shortcut icon" type="image/jpg" href="inc/favico.png"/>
     </head>
     <body class="d-flex flex-column min-vh-100">
         <header class="container bg-dark">
-            <a href="index.php">
+            <a href="index.php" class="flexRow">
+                <span> <img src="inc/favico.png" alt="logo" width="40" class="logo"/> </span>
                 <h1 class="text-white py-4 px-2">Shop list</h1>
             </a>
             <?php
