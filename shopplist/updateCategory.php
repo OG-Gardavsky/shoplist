@@ -5,8 +5,6 @@
     require 'inc/db.php';
     require 'user_required.php';
 
-    $pageTitle='Add new item to list';
-    include 'inc/header.php';
 
     $errors = [];
 
@@ -70,8 +68,8 @@
     }
 
 
-
-
+    $pageTitle = $categoryId != null ? 'Update category' : 'Add new category';
+    include 'inc/header.php';
 
 
 
@@ -82,8 +80,8 @@
         <div class="flexRow">
 
             <div class="form-group">
-                <label for="neco">Name of Category</label>
-                <input type="text" name="nameOfCategory" class="form-control <?php echo (!empty($errors['nameOfCategory'])?'is-invalid':''); ?>"
+                <label for="nameOfCategory">Name of Category</label>
+                <input type="text" id="nameOfCategory" name="nameOfCategory" class="form-control <?php echo (!empty($errors['nameOfCategory'])?'is-invalid':''); ?>"
 
                        value="<?php echo htmlspecialchars(@$_POST['nameOfCategory']) ?>" />
                 <?php

@@ -37,7 +37,7 @@
 <!-- selecting category   -->
     <form method="get" class="form-group" id="categoryFilterForm">
         <label for="categoryId">Filter by category:</label>
-        <select name="categoryId" class="form-control" onchange="document.getElementById('categoryFilterForm').submit();" >
+        <select name="categoryId" id="categoryId" class="form-control" onchange="document.getElementById('categoryFilterForm').submit();" >
             <option value="">--choose category--</option>
             <?php
 
@@ -75,11 +75,11 @@
                         <span>'.htmlspecialchars($shopList['listName']).'</span>
                     </div>
                     <div>
-                        <a href="deleteList.php?shopListId='.$shopList['shopListId'].'" type="button" class="btn btn-danger">X</a>
-                        <a href="editShopList.php?shopListId='.$shopList['shopListId'].'" type="button" class="btn btn-secondary">edit / view</a>
-                        <a href="markListAsFinished.php?shopListId='.$shopList['shopListId'].'" type="button" class="btn success">';
+                        <a href="deleteList.php?shopListId='.$shopList['shopListId'].'" class="btn btn-danger">X</a>
+                        <a href="editShopList.php?shopListId='.$shopList['shopListId'].'" class="btn btn-secondary">edit / view</a>
+                        <a href="markListAsFinished.php?shopListId='.$shopList['shopListId'].'" class="btn success">';
                                if ($shopList['finished'] == false) {
-                                   echo '&nbsp&nbsp&nbsp';
+                                   echo '&nbsp;&nbsp;&nbsp;';
                                } else {
                                    echo '✓';
                                }

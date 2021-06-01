@@ -106,8 +106,8 @@
                     echo '<span>'.htmlspecialchars($category['name']).'</span>';
 
                     echo '<div>';
-                        echo '<a href="deleteCategory.php?categoryId='.$category['id'].'&shopListId='.$shopListId.'" type="button" class="btn btn-danger">X</a>';
-                        echo '<a href="updateCategory.php?categoryId='.$category['id'].'&shopListId='.$shopListId.'" type="button" class="btn btn-secondary">edit</a>';
+                        echo '<a href="deleteCategory.php?categoryId='.$category['id'].'&shopListId='.$shopListId.'" class="btn btn-danger">X</a>';
+                        echo '<a href="updateCategory.php?categoryId='.$category['id'].'&shopListId='.$shopListId.'" class="btn btn-secondary">edit</a>';
                     echo '</div>';
 
                 echo '</div>';

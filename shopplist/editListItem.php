@@ -4,8 +4,7 @@
     require 'inc/db.php';
     require 'user_required.php';
 
-    $pageTitle='Add new item to list';
-    include 'inc/header.php';
+
 
     $errors = [];
 
@@ -136,8 +135,8 @@
 
 
 
-
-
+    $pageTitle = $itemId != null ? 'Update item in shop list' : 'Add new item to shop list';
+    include 'inc/header.php';
 
 
 
@@ -148,8 +147,8 @@
         <div class="flexRow">
 
             <div class="form-group">
-                <label for="neco">Count of item</label>
-                <input type="text" name="nameOfItem"  class="form-control <?php echo (!empty($errors['nameOfItem'])?'is-invalid':''); ?>"
+                <label for="nameOfItem">Count of item</label>
+                <input type="text" name="nameOfItem" id="nameOfItem" class="form-control <?php echo (!empty($errors['nameOfItem'])?'is-invalid':''); ?>"
 
                        value="<?php echo htmlspecialchars(@$_POST['nameOfItem']) ?>" />
                 <?php
@@ -160,8 +159,8 @@
             </div>
 
             <div class="form-group">
-                <label for="count of item">Count of item</label>
-                <input type="number" name="countOfItem"  class="form-control <?php echo (!empty($errors['countOfItem'])?'is-invalid':''); ?>"
+                <label for="countOfItem">Count of item</label>
+                <input type="number" id="countOfItem" name="countOfItem"  class="form-control <?php echo (!empty($errors['countOfItem'])?'is-invalid':''); ?>"
 
                        value="<?php echo htmlspecialchars(@$_POST['countOfItem']) ?>" />
                 <?php

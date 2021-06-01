@@ -103,6 +103,12 @@
 
 
     $pageTitle='Add new list';
+
+    $pageTitle = $shopListId != null ? 'Update list' : 'Add new list';
+
+
+
+
     include 'inc/header.php';
 
 ?>
@@ -125,7 +131,7 @@
 <!-- category selection -->
         <div class="form-group">
             <label for="categoryId">Category:</label>
-            <select name="categoryId"
+            <select name="categoryId" id="categoryId"
                         required
                     class="form-control <?php echo (!empty($errors['categoryId'])?'is-invalid':''); ?>">
                 <option value="">--choose category--</option>
@@ -134,7 +140,7 @@
                         foreach ($categoryList as $category){
 
                             echo '<option value="'.$category['id'].'"'
-                                .($category['id']==$selectedCategoryId?'selected="selected"':'').'>'
+                                .($category['id']==$selectedCategoryId?' selected="selected"':'').'>'
                                 .htmlspecialchars($category['name'])
                                 .'</option>';
                         }
@@ -185,12 +191,12 @@
                                     <span>'.htmlspecialchars($listItem['name']).'</span>
                                 </div>
                                 <div>
-                                    <a href="deleteListItem.php?itemId='.$listItem['id'].'&shopListId='.$listItem['shop_list_id'].'" type="button" class="btn btn-danger">X</a>
+                                    <a href="deleteListItem.php?itemId='.$listItem['id'].'&shopListId='.$listItem['shop_list_id'].'" class="btn btn-danger">X</a>
                                     
-                                    <a href="editListItem.php?itemId='.$listItem['id'].'" type="button" class="btn btn-secondary">edit</a>
-                                    <a href="markItemAsFinished.php?itemId='.$listItem['id'].'&shopListId='.$listItem['shop_list_id'].'" type="button" class="btn success">';
+                                    <a href="editListItem.php?itemId='.$listItem['id'].'" class="btn btn-secondary">edit</a>
+                                    <a href="markItemAsFinished.php?itemId='.$listItem['id'].'&shopListId='.$listItem['shop_list_id'].'" class="btn success">';
                                         if ($listItem['bought'] == false) {
-                                            echo '&nbsp&nbsp&nbsp';
+                                            echo '&nbsp;&nbsp;&nbsp;';
                                         } else {
                                             echo '✓';
                                         }
@@ -203,7 +209,7 @@
 
             if ($shopListId != null) {
                 //button for adding new item
-                echo '<a href="editListItem.php?shopListId='.$shopListId.'" type="button" id="addListBtn" class="btn btn-secondary">Add new item</a><hr />';
+                echo '<a href="editListItem.php?shopListId='.$shopListId.'" id="addListBtn" class="btn btn-secondary">Add new item</a><hr />';
             }
 
 

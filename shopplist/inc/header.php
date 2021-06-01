@@ -28,5 +28,9 @@
             ?>
         </header>
         <main class="container pt-2 main">
-        <h2><?php echo (!empty($pageTitle) ? $pageTitle : '')?></h2>
+        <?php
+            if (!empty($pageTitle)) {
+                echo '<h2>'.$pageTitle.'</h2>';
+            }
+        ?>
         <hr />
