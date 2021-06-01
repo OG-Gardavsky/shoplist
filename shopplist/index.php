@@ -25,10 +25,6 @@
     }
 
 
-
-
-
-
     $pageTitle='';
     include 'inc/header.php';
 
@@ -62,6 +58,7 @@
         </select>
     </form>
 
+    <a href="categoryManagement.php" class="btn btn-secondary">Category management</a>
     <a href="editShopList.php" class="btn btn-primary">Add new shopping list</a>
 
 <!--  displaying shoping lists  -->

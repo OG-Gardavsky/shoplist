@@ -84,7 +84,13 @@
 
 
         <button type="submit" class="btn btn-primary">Add category</button>
-        <a href="editShopList.php<?php if ($shopListId != null) { echo '?shopListId='.$shopListId; }?>" class="btn btn-light">back to shop list</a>
+        <a class="btn btn-light" href="<?php
+            if ($shopListId != null) {
+                echo 'editShopList.php?shopListId='.$shopListId.'">back to shop list';
+            } else {
+                echo 'index.php'.'">back to home page';
+            }
+        ?></a>
     </form>
 
 <!-- displaying of created categories -->
