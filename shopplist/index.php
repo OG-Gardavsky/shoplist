@@ -14,9 +14,14 @@
             $errors['genericError'] = 'Unexpected application error';
         }
     } else {
-        $shopListsQuery = $db->prepare("SELECT sl_shop_lists.id AS shopListId, sl_shop_lists.name AS 'listName', sl_shop_lists.finished, sl_categories.name AS 'categoryName' FROM sl_shop_lists JOIN sl_categories ON sl_shop_lists.category_id=sl_categories.id WHERE sl_shop_lists.user_id = ?");
+//        $shopListsQuery = $db->prepare("SELECT sl_shop_lists.id AS shopListId, sl_shop_lists.name AS 'listName', sl_shop_lists.finished, sl_categories.name AS 'categoryName' FROM sl_shop_lists JOIN sl_categories ON sl_shop_lists.category_id=sl_categories.id WHERE sl_shop_lists.user_id = ?");
+        $shopListsQuery = $db->prepare("SELECT id AS 'shopListId', name AS 'listName', finished FROM sl_shop_lists WHERE user_id = 1");
         try {
+            echo 'je to tady';
             $shopListsQuery->execute([$currentUserId]);
+
+            echo $shopListsQuery ->rowCount();
+
             $shopLists = $shopListsQuery->fetchAll(PDO::FETCH_ASSOC);
 
         } catch (Exception $exception) {
@@ -63,9 +68,11 @@
 
 <!--  displaying shoping lists  -->
     <?php
-        foreach ($shopLists as $shopList) {
-            echo
-            '<div class="card">
+        if (isset($shopLists)) {
+
+            foreach ($shopLists as $shopList) {
+                echo
+                    '<div class="card">
                 <div class="card-header flexRow cardContent">
                     <div>
                         <span class="badge badge-info">'.htmlspecialchars($shopList['categoryName']).'</span>
@@ -75,17 +82,20 @@
                         <a href="deleteList.php?shopListId='.$shopList['shopListId'].'" class="btn btn-danger">X</a>
                         <a href="editShopList.php?shopListId='.$shopList['shopListId'].'" class="btn btn-secondary">edit / view</a>
                         <a href="markListAsFinished.php?shopListId='.$shopList['shopListId'].'" class="btn success">';
-                               if ($shopList['finished'] == false) {
-                                   echo '&nbsp;&nbsp;&nbsp;';
-                               } else {
-                                   echo '✓';
-                               }
-                        echo '</a>
+                if ($shopList['finished'] == false) {
+                    echo '&nbsp;&nbsp;&nbsp;';
+                } else {
+                    echo '✓';
+                }
+                echo '</a>
                     </div>
                 </div>
             </div>';
 
+            }
+
         }
+
     ?>
 
 

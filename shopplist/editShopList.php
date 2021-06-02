@@ -17,6 +17,8 @@
             $errors['nameOfList'] = 'name cannot be blank';
         }
 
+        //category field nejakej check
+
 //        if ($_POST['categoryId'] == '' || $_POST['categoryId'] == null ) {
 //            $errors['categoryId'] = 'category cannot be blank';
 //        }
@@ -52,13 +54,30 @@
                 }
             } else {
                 //update of existing
-                $updateQuery=$db->prepare('UPDATE sl_shop_lists SET name=:nameOfList WHERE id=:shopListId LIMIT 1;');
+                $updateQuery=$db->prepare('UPDATE sl_shop_lists SET name=:nameOfList WHERE id=:shopListId AND user_id=:currentUserId LIMIT 1;');
+                $deleteCategoryQuery=$db->prepare('DELETE FROM sl_categories_and_lists WHERE shop_list_id = ?;');
+                $insertCategoryQuery=$db->prepare('INSERT INTO sl_categories_and_lists (shop_list_id, category_id) VALUES (:shopListId, :categoryId);');
+
                 try {
 
                     $updateQuery->execute([
                         ':nameOfList'=>$nameOfList,
-                        ':shopListId'=>$shopListId
+                        ':shopListId'=>$shopListId,
+                        ':currentUserId'=>$currentUserId
                     ]);
+
+                    $deleteCategoryQuery->execute([$shopListId]);
+
+                    if ( isset($_POST['category']) ) {
+
+                        foreach($_POST['category'] as $value){
+                            $insertCategoryQuery->execute([
+                                ':shopListId'=>$shopListId,
+                                ':categoryId'=>intval($value)
+                            ]);
+                        }
+                    }
+
 
                     $infoMessage = 'Changes were successfully saved.';
 
@@ -86,8 +105,12 @@
                 $shopListToUpdate = $shopListToUpdateQuery->fetch(PDO::FETCH_ASSOC);
             }
 
-            $_POST['nameOfList'] = $shopListToUpdate['name'];
-//            $selectedCategoryId =  $shopListToUpdate['category_id'];
+            if (empty($errors)) {
+                $_POST['nameOfList'] = $shopListToUpdate['name'];
+
+//                $selectedCategoryId =  $shopListToUpdate['category_id'];
+            }
+
 
         } catch (Exception $exception) {
             $errors['genericError'] = 'Unexpected application error';
@@ -140,17 +163,18 @@
 
         $skrk = false;
 
+        echo '<span>category</span>';
         echo '<div class="form-check flexRow">';
         echo '<label class="form-check-label">';
 
 
-        if (!empty($categoryList)) {
-            foreach ($categoryList as $category) {
-                echo '<input type="checkbox" class="category" name="category[]" value="'.$category['id'].'"';
-                if ($skrk) { echo ' checked '; }
-                echo '>'.$category['name'];
+            if (!empty($categoryList)) {
+                foreach ($categoryList as $category) {
+                    echo '<input type="checkbox" class="category" name="category[]" value="'.$category['id'].'"';
+                    if ($skrk) { echo ' checked '; }
+                    echo '>'.$category['name'];
+                }
             }
-        }
 
         echo '</label>';
         echo '</div>';
