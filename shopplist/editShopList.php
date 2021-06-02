@@ -78,7 +78,6 @@
                         }
                     }
 
-
                     $infoMessage = 'Changes were successfully saved.';
 
                 } catch (Exception $exception) {
@@ -119,14 +118,14 @@
     }
 
 
-    $categoryListQuery = $db->prepare("SELECT * FROM sl_categories WHERE user_id = ?");
-    try {
-        $categoryListQuery->execute([$currentUserId]);
-        $categoryList = $categoryListQuery->fetchAll(PDO::FETCH_ASSOC);
-
-    } catch (Exception $exception) {
-        $errors['genericError'] = 'Unexpected application error';
-    }
+//    $categoryListQuery = $db->prepare("SELECT * FROM sl_categories WHERE user_id = ?");
+//    try {
+//        $categoryListQuery->execute([$currentUserId]);
+//        $categoryList = $categoryListQuery->fetchAll(PDO::FETCH_ASSOC);
+//
+//    } catch (Exception $exception) {
+//        $errors['genericError'] = 'Unexpected application error';
+//    }
 
 
     $pageTitle='Add new list';
@@ -158,11 +157,29 @@
 <!-- category selection -->
 
 <?php
-
+    // for selecting categories
     if ($shopListId != null) {
 
-        $skrk = false;
+        $categoryListQuery = $db->prepare("SELECT * FROM sl_categories WHERE user_id = ?");
+        $checkedCategoriesQuery = $db->prepare("SELECT category_id FROM sl_categories_and_lists WHERE shop_list_id = ?");
+        try {
+            $categoryListQuery->execute([$currentUserId]);
+            $checkedCategoriesQuery->execute([$shopListId]);
 
+            $categoryList = $categoryListQuery->fetchAll(PDO::FETCH_ASSOC);
+            $checkedCategories = $checkedCategoriesQuery->fetchAll(PDO::FETCH_ASSOC);
+
+        } catch (Exception $exception) {
+            $errors['genericError'] = 'Unexpected application error';
+        }
+
+        //array of checked values
+        $arrayOfCheckedCategories = [];
+        foreach ($checkedCategories as $value) {
+            array_push($arrayOfCheckedCategories, $value['category_id']);
+        }
+
+        // printing of checkboxes
         echo '<span>category</span>';
         echo '<div class="form-check flexRow">';
         echo '<label class="form-check-label">';
@@ -171,22 +188,14 @@
             if (!empty($categoryList)) {
                 foreach ($categoryList as $category) {
                     echo '<input type="checkbox" class="category" name="category[]" value="'.$category['id'].'"';
-                    if ($skrk) { echo ' checked '; }
-                    echo '>'.$category['name'];
+                    if (in_array($category['id'], $arrayOfCheckedCategories)) { echo ' checked '; }
+                    echo ' >'.$category['name'];
                 }
             }
 
         echo '</label>';
         echo '</div>';
 
-
-        if(!empty($_POST['category'])) {
-
-            foreach($_POST['category'] as $value){
-                echo "value : ".$value.'<br/>';
-            }
-
-        }
 
 
         echo '<span> <a href="categoryManagement.php?shopListId='.$shopListId.'" class="btn btn-light">Category Management</a> </span>
