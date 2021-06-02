@@ -5,7 +5,7 @@
     $errors = [];
 
     if (isset($_GET['categoryId']) && $_GET['categoryId'] != null) {
-        $shopListsQuery = $db->prepare("SELECT sl_shop_lists.id AS shopListId, sl_shop_lists.name AS 'listName', sl_shop_lists.finished, sl_categories.name AS 'categoryName' FROM sl_shop_lists JOIN sl_categories ON sl_shop_lists.category_id=sl_categories.id WHERE sl_shop_lists.user_id = ? AND sl_shop_lists.category_id=?");
+        $shopListsQuery = $db->prepare("SELECT sl_shop_lists.id AS 'shopListId', sl_shop_lists.name AS 'listName', sl_shop_lists.finished FROM sl_shop_lists JOIN sl_categories_and_lists ON sl_categories_and_lists.shop_list_id = sl_shop_lists.id WHERE sl_shop_lists.user_id = ? AND sl_categories_and_lists.category_id = ?");
         try {
             $shopListsQuery->execute([$currentUserId, $_GET['categoryId']]);
             $shopLists = $shopListsQuery->fetchAll(PDO::FETCH_ASSOC);
@@ -14,7 +14,6 @@
             $errors['genericError'] = 'Unexpected application error';
         }
     } else {
-//        $shopListsQuery = $db->prepare("SELECT sl_shop_lists.id AS shopListId, sl_shop_lists.name AS 'listName', sl_shop_lists.finished, sl_categories.name AS 'categoryName' FROM sl_shop_lists JOIN sl_categories ON sl_shop_lists.category_id=sl_categories.id WHERE sl_shop_lists.user_id = ?");
         $shopListsQuery = $db->prepare("SELECT id AS 'shopListId', name AS 'listName', finished FROM sl_shop_lists WHERE user_id = 1");
         try {
             $shopListsQuery->execute([$currentUserId]);
@@ -64,7 +63,7 @@
 
 <!--  displaying shoping lists  -->
     <?php
-        if (isset($shopLists)) {
+        if (isset($shopLists) && count($shopLists) > 0) {
 
             $asociatedCategoriesQuery = $db->prepare("SELECT name FROM sl_categories_and_lists JOIN sl_categories ON sl_categories_and_lists.category_id=sl_categories.id WHERE shop_list_id = ?");
 
@@ -73,7 +72,6 @@
                     '<div class="card">
                 <div class="card-header flexRow cardContent">
                     <div>';
-
 
                     try {
                         $asociatedCategoriesQuery->execute([$shopList['shopListId']]);
@@ -84,14 +82,10 @@
                     }
 
                     if ($asociatedCategories) {
-                            foreach ($asociatedCategories as $category) {
-                                echo '<span class="badge badge-info padding5">'.htmlspecialchars($category['name']).'</span>';
-                            }
+                        foreach ($asociatedCategories as $category) {
+                            echo '<span class="badge badge-info margin5">' .htmlspecialchars($category['name']).'</span>';
+                        }
                     }
-
-
-
-
 
                     echo
                         '<span>'.htmlspecialchars($shopList['listName']).'</span>
@@ -112,6 +106,8 @@
 
             }
 
+        } else if (isset($shopLists) && count($shopLists) < 1) {
+            echo '<div class="alert alert-info" style="margin-top: 10px">No shopping list in selected category, select different one.</div>';
         }
 
     ?>
