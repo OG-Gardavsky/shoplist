@@ -50,7 +50,7 @@
                 if (!empty($categoryList)){
                     foreach ($categoryList as $category){
                         echo '<option value="'.$category['id'].'"';
-                        echo ($category['id']==@$_GET['categoryId']?'selected="selected"':'').'>';
+                        echo ($category['id']==@$_GET['categoryId']?' selected="selected"':'').'>';
                         echo htmlspecialchars($category['name']).'</option>';
                     }
                 }
