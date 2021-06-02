@@ -106,8 +106,6 @@
 
             if (empty($errors)) {
                 $_POST['nameOfList'] = $shopListToUpdate['name'];
-
-//                $selectedCategoryId =  $shopListToUpdate['category_id'];
             }
 
 
@@ -118,14 +116,6 @@
     }
 
 
-//    $categoryListQuery = $db->prepare("SELECT * FROM sl_categories WHERE user_id = ?");
-//    try {
-//        $categoryListQuery->execute([$currentUserId]);
-//        $categoryList = $categoryListQuery->fetchAll(PDO::FETCH_ASSOC);
-//
-//    } catch (Exception $exception) {
-//        $errors['genericError'] = 'Unexpected application error';
-//    }
 
 
     $pageTitle='Add new list';
@@ -187,13 +177,12 @@
 
             if (!empty($categoryList)) {
                 foreach ($categoryList as $category) {
-                    echo '<input type="checkbox" class="category" name="category[]" value="'.$category['id'].'"';
+                    echo '<input type="checkbox" class="category" id="category'.$category['id'].'" name="category[]" value="'.$category['id'].'"';
                     if (in_array($category['id'], $arrayOfCheckedCategories)) { echo ' checked '; }
-                    echo ' >'.$category['name'];
+                    echo 'onclick="document.querySelector(\'#category'.$category['id'].'\').submit();" >'.$category['name'];
                 }
             }
 
-//        echo '</label>';
         echo '</div>';
 
 
