@@ -50,6 +50,10 @@ header span {
     color: green;
 }
 
+.padding5 {
+    /*padding: 5px;*/
+    margin: 5px;
+}
 
 .card {
     margin-top: 5px;

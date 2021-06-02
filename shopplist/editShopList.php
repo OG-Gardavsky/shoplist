@@ -182,7 +182,7 @@
         // printing of checkboxes
         echo '<span>category</span>';
         echo '<div class="form-check flexRow">';
-        echo '<label class="form-check-label">';
+        echo '<label class="form-check-label"></label>';
 
 
             if (!empty($categoryList)) {
@@ -193,7 +193,7 @@
                 }
             }
 
-        echo '</label>';
+//        echo '</label>';
         echo '</div>';
 
 

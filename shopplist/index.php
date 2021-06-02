@@ -17,10 +17,7 @@
 //        $shopListsQuery = $db->prepare("SELECT sl_shop_lists.id AS shopListId, sl_shop_lists.name AS 'listName', sl_shop_lists.finished, sl_categories.name AS 'categoryName' FROM sl_shop_lists JOIN sl_categories ON sl_shop_lists.category_id=sl_categories.id WHERE sl_shop_lists.user_id = ?");
         $shopListsQuery = $db->prepare("SELECT id AS 'shopListId', name AS 'listName', finished FROM sl_shop_lists WHERE user_id = 1");
         try {
-            echo 'je to tady';
             $shopListsQuery->execute([$currentUserId]);
-
-            echo $shopListsQuery ->rowCount();
 
             $shopLists = $shopListsQuery->fetchAll(PDO::FETCH_ASSOC);
 
@@ -53,10 +50,9 @@
 
                 if (!empty($categoryList)){
                     foreach ($categoryList as $category){
-                        echo '<option value="'.$category['id'].'"'
-                            .($category['id']==@$_GET['categoryId']?'selected="selected"':'').'>'
-                            .htmlspecialchars($category['name'])
-                            .'</option>';
+                        echo '<option value="'.$category['id'].'"';
+                        echo ($category['id']==@$_GET['categoryId']?'selected="selected"':'').'>';
+                        echo htmlspecialchars($category['name']).'</option>';
                     }
                 }
             ?>
@@ -70,13 +66,35 @@
     <?php
         if (isset($shopLists)) {
 
+            $asociatedCategoriesQuery = $db->prepare("SELECT name FROM sl_categories_and_lists JOIN sl_categories ON sl_categories_and_lists.category_id=sl_categories.id WHERE shop_list_id = ?");
+
             foreach ($shopLists as $shopList) {
                 echo
                     '<div class="card">
                 <div class="card-header flexRow cardContent">
-                    <div>
-                        <span class="badge badge-info">'.htmlspecialchars($shopList['categoryName']).'</span>
-                        <span>'.htmlspecialchars($shopList['listName']).'</span>
+                    <div>';
+
+
+                    try {
+                        $asociatedCategoriesQuery->execute([$shopList['shopListId']]);
+                        $asociatedCategories = $asociatedCategoriesQuery->fetchAll(PDO::FETCH_ASSOC);
+
+                    } catch (Exception $exception) {
+                        $errors['genericError'] = 'Unexpected application error';
+                    }
+
+                    if ($asociatedCategories) {
+                            foreach ($asociatedCategories as $category) {
+                                echo '<span class="badge badge-info padding5">'.htmlspecialchars($category['name']).'</span>';
+                            }
+                    }
+
+
+
+
+
+                    echo
+                        '<span>'.htmlspecialchars($shopList['listName']).'</span>
                     </div>
                     <div>
                         <a href="deleteList.php?shopListId='.$shopList['shopListId'].'" class="btn btn-danger">X</a>
