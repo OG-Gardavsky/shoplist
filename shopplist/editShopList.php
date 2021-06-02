@@ -87,7 +87,7 @@
             }
 
             $_POST['nameOfList'] = $shopListToUpdate['name'];
-            $selectedCategoryId =  $shopListToUpdate['category_id'];
+//            $selectedCategoryId =  $shopListToUpdate['category_id'];
 
         } catch (Exception $exception) {
             $errors['genericError'] = 'Unexpected application error';
@@ -133,68 +133,51 @@
 
 
 <!-- category selection -->
-        <div class="form-check flexRow">
-            <label class="form-check-label">
-                <?php
-                    $skrk = false;
 
-                    if (!empty($categoryList)) {
-                        foreach ($categoryList as $category) {
-                            echo '<input type="checkbox" class="category" name="category[]" value="'.$category['id'].'"';
-                            if ($skrk) { echo ' checked '; }
-                            echo '>'.$category['name'];
-                        }
-                    }
+<?php
 
-                ?>
+    if ($shopListId != null) {
 
-            </label>
-        </div>
+        $skrk = false;
+
+        echo '<div class="form-check flexRow">';
+        echo '<label class="form-check-label">';
 
 
-        <?php
-//        if(isset($_POST['submit'])){
+        if (!empty($categoryList)) {
+            foreach ($categoryList as $category) {
+                echo '<input type="checkbox" class="category" name="category[]" value="'.$category['id'].'"';
+                if ($skrk) { echo ' checked '; }
+                echo '>'.$category['name'];
+            }
+        }
 
-            if(!empty($_POST['category'])) {
+        echo '</label>';
+        echo '</div>';
 
-                foreach($_POST['category'] as $value){
-                    echo "value : ".$value.'<br/>';
-                }
 
+        if(!empty($_POST['category'])) {
+
+            foreach($_POST['category'] as $value){
+                echo "value : ".$value.'<br/>';
             }
 
-//        }
-        ?>
+        }
+
+
+        echo '<span> <a href="categoryManagement.php?shopListId='.$shopListId.'" class="btn btn-light">Category Management</a> </span>
+        <hr />';
+    }
+
+
+?>
 
 
 
-        <div class="form-group">
-            <label for="categoryId">Category:</label>
-            <select name="categoryId" id="categoryId"
-                        required
-                    class="form-control <?php echo (!empty($errors['categoryId'])?'is-invalid':''); ?>">
-                <option value="">--choose category--</option>
-                <?php
-                    if (!empty($categoryList)){
-                        foreach ($categoryList as $category){
 
-                            echo '<option value="'.$category['id'].'"'
-                                .($category['id']==$selectedCategoryId?' selected="selected"':'').'>'
-                                .htmlspecialchars($category['name'])
-                                .'</option>';
-                        }
-                    }
-                ?>
-            </select>
-            <?php
-                if (!empty($errors['categoryId'])){
-                    echo '<div class="invalid-feedback">'.$errors['categoryId'].'</div>';
-                }
-            ?>
-        </div>
 
-        <span> <a href="categoryManagement.php?shopListId=<?php echo $shopListId?>" class="btn btn-light">Category Management</a> </span>
-        <hr />
+
+
 
 
 <!--displaying items -->
