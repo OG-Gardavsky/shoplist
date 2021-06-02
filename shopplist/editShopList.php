@@ -17,14 +17,14 @@
             $errors['nameOfList'] = 'name cannot be blank';
         }
 
-        if ($_POST['categoryId'] == '' || $_POST['categoryId'] == null ) {
-            $errors['categoryId'] = 'category cannot be blank';
-        }
+//        if ($_POST['categoryId'] == '' || $_POST['categoryId'] == null ) {
+//            $errors['categoryId'] = 'category cannot be blank';
+//        }
 
 
         if (empty($errors)) {
             $nameOfList = trim($_POST['nameOfList']);
-            $categoryId = $_POST['categoryId'];
+//            $categoryId = $_POST['categoryId'];
 
             if (strlen($nameOfList) > $maxNameCharLength) {
                 $errors['nameOfList'] = 'lenght cannot be more than '.$maxNameCharLength.' characters';
@@ -37,13 +37,13 @@
             //insert of not saved list
             if ($shopListId == null) {
 
-                $saveQuery=$db->prepare('INSERT INTO sl_shop_lists (user_id, category_id, name) VALUES (:userId, :categoryId, :name);');
+                $saveQuery=$db->prepare('INSERT INTO sl_shop_lists (user_id, name) VALUES (:userId, :name);');
                 try {
                     $saveQuery->execute([
                         ':userId'=> $currentUserId,
-                        ':categoryId'=> $categoryId,
                         ':name'=>$nameOfList
                     ]);
+
 
                     header('location: index.php');
 
@@ -52,11 +52,10 @@
                 }
             } else {
                 //update of existing
-                $updateQuery=$db->prepare('UPDATE sl_shop_lists SET category_id=:categoryId, name=:nameOfList WHERE id=:shopListId LIMIT 1;');
+                $updateQuery=$db->prepare('UPDATE sl_shop_lists SET name=:nameOfList WHERE id=:shopListId LIMIT 1;');
                 try {
 
                     $updateQuery->execute([
-                        ':categoryId'=> $categoryId,
                         ':nameOfList'=>$nameOfList,
                         ':shopListId'=>$shopListId
                     ]);
@@ -134,6 +133,41 @@
 
 
 <!-- category selection -->
+        <div class="form-check flexRow">
+            <label class="form-check-label">
+                <?php
+                    $skrk = false;
+
+                    if (!empty($categoryList)) {
+                        foreach ($categoryList as $category) {
+                            echo '<input type="checkbox" class="category" name="category[]" value="'.$category['id'].'"';
+                            if ($skrk) { echo ' checked '; }
+                            echo '>'.$category['name'];
+                        }
+                    }
+
+                ?>
+
+            </label>
+        </div>
+
+
+        <?php
+//        if(isset($_POST['submit'])){
+
+            if(!empty($_POST['category'])) {
+
+                foreach($_POST['category'] as $value){
+                    echo "value : ".$value.'<br/>';
+                }
+
+            }
+
+//        }
+        ?>
+
+
+
         <div class="form-group">
             <label for="categoryId">Category:</label>
             <select name="categoryId" id="categoryId"
