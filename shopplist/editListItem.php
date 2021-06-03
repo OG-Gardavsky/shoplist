@@ -85,22 +85,36 @@
                     }
                 }
                 else if ($itemId != null) {
-
                     //updating existing
-                    $updateQuery=$db->prepare('UPDATE sl_items SET name=:nameOfItem, count=:countOfItem WHERE id=:itemId LIMIT 1;');
-                    try {
-                        $updateQuery->execute([
-                            ':nameOfItem'=> $nameOfItem,
-                            ':countOfItem'=>$countOfItem,
-                            ':itemId'=> $itemId
-                        ]);
+                    if ($countOfItem == 0) {
 
-                        header('location: editShopList.php?shopListId='.$shopListId);
+                        $itemTodeleteQuery = $db->prepare("DELETE FROM sl_items WHERE id = ? LIMIT 1");
+                        try {
+                            $itemTodeleteQuery->execute([$itemId]);
+                            header('location: editShopList.php?shopListId='.$shopListId);
+                        } catch (Exception $exception) {
+                            $errors['genericError'] = 'Unexpected application error';
+                        }
 
-                    } catch (Exception $exception) {
-                        echo $exception;
-                        $errors['genericError'] = 'Error during saving of shop list';
+
+                    } else {
+
+                        $deleteQuery=$db->prepare('UPDATE sl_items SET name=:nameOfItem, count=:countOfItem WHERE id=:itemId LIMIT 1;');
+                        try {
+                            $deleteQuery->execute([
+                                ':nameOfItem'=> $nameOfItem,
+                                ':countOfItem'=>$countOfItem,
+                                ':itemId'=> $itemId
+                            ]);
+
+                            header('location: editShopList.php?shopListId='.$shopListId);
+
+                        } catch (Exception $exception) {
+                            $errors['genericError'] = 'Error during saving of shop list';
+                        }
                     }
+
+
 
                 }
             }
@@ -147,7 +161,7 @@
         <div class="flexRow">
 
             <div class="form-group">
-                <label for="nameOfItem">Count of item</label>
+                <label for="nameOfItem">Name of item</label>
                 <input type="text" name="nameOfItem" id="nameOfItem" class="form-control <?php echo (!empty($errors['nameOfItem'])?'is-invalid':''); ?>"
 
                        value="<?php echo htmlspecialchars(@$_POST['nameOfItem']) ?>" />
